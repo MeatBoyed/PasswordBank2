@@ -17,16 +17,20 @@ class ViewAccounts:
                 
                 if selection == 1:
                     print("View all accounts")
-                    break
+                    self.ViewAllAccounts()
+
                 elif selection == 2:
                     print("Find accounts by name")
-                    break
+                    self.FindAccountByName()
+
                 elif selection == 3:
                     print("Find accounts linked to email")
-                    break
+                    self.FindAccountsLinkedToEmail()
+
                 elif selection == 4:
                     print("Find accounts linked to password")
-                    break
+                    self.FindAccountByPassword()
+
                 elif selection == 5:
                     print("Backing to main Menue")
                     break
@@ -37,5 +41,90 @@ class ViewAccounts:
                 print("Enter valid selection option")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
+    
+
+    @staticmethod
+    def ViewAllAccounts():
+
+        headerMessage = ("""=========================================================""")
+        print(headerMessage)
+        
+        print("Here are all your accounts")
+        print("accounts.....")
+
+
+        print("---------------------------------------------------------")
+    
+    @staticmethod
+    def FindAccountByName():
+
+        headerMessage = ("""=========================================================""")
+        print(headerMessage)
+        
+
+        try:
+
+            while True:
+                searchName = str(input("Name: "))
+                print("---------------------------------------------------------")
+
+                print(searchName)
+
+                print("Here is the account")
+                break
+            
+        except ValueError:
+            print("Enter valid name")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
+
+
+    @staticmethod
+    def FindAccountsLinkedToEmail():
+
+        headerMessage = ("""=========================================================""")
+        print(headerMessage)
+        
+
+        try:
+
+            while True:
+                searchEmail = str(input("Email: "))
+                print("---------------------------------------------------------")
+
+                print(searchEmail)
+
+                print("Here is the account")
+                break
+            
+        except ValueError:
+            print("Enter valid email")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
+
+
+    @staticmethod
+    def FindAccountByPassword():
+
+        headerMessage = ("""=========================================================""")
+        print(headerMessage)
+        
+
+        try:
+
+            while True:
+                searchPassword = str(input("Password: "))
+                print("---------------------------------------------------------")
+
+                print(searchPassword)
+
+                print("Here is the account")
+                break
+            
+        except ValueError:
+            print("Enter valid password")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
+
 
 ViewAccounts()
