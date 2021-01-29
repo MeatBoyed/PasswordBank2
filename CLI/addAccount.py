@@ -1,12 +1,13 @@
-
 class AddAccount:
 
     def __init__(self):
 
-        headerMessage = ("""=========================================================\n===================== Add Account =======================\n""")
+        headerMessage = (
+            """=========================================================\n===================== Add Account =======================\n""")
         print(headerMessage)
-        
-        accessMessage = ("""1: Add new Account\n2: Update a Account\n3: Back to Main Menue\n\n=========================================================""")
+
+        accessMessage = (
+            """1: Add new Account\n2: Update a Account\n3: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
         while True:
@@ -14,16 +15,23 @@ class AddAccount:
             try:
                 select = int(input(": "))
                 print("---------------------------------------------------------")
-                
+
                 if select == 1:
                     print("Add new Account")
-                    break
+
                 elif select == 2:
                     print("Update a Account")
-                    break
+
                 elif select == 3:
-                    print("Backing to Main Menue")
+                    headerMessage = (
+                        """=========================================================\n===================== Main Menue ========================\n""")
+                    print(headerMessage)
+
+                    accessMessage = (
+                        """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
+                    print(accessMessage)
                     break
+
                 else:
                     print("Enter a valid select option")
 
@@ -31,6 +39,3 @@ class AddAccount:
                 print("Enter a valid select option")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
-    
-
-AddAccount()

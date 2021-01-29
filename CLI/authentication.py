@@ -1,12 +1,14 @@
 import getpass
+from mainMenue import MainMenue
+
 
 class Authentication:
-
 
     def __init__(self):
 
         # Welcome message for opening application
-        welcomeMessage = ("""=========================================================\n============== WELCOME PLEASE LOGIN =====================\n""")
+        welcomeMessage = (
+            """=========================================================\n============== WELCOME PLEASE LOGIN =====================\n""")
 
         print(welcomeMessage)
 
@@ -35,17 +37,18 @@ class Authentication:
                         if retryPassword:
                             print("Password really is correct")
                             print(f"Welcome {username}")
+                            MainMenue()
                             break
                         else:
                             print("Tried too many times!")
-                            break 
+                            break
 
                 else:
                     print("Tried too many times!")
                     break
             else:
                 print("correct username")
-                
+
                 password = getpass.getpass("Enter Password: ")
                 isPasswordValid = self.ValidatePassword(password)
 
@@ -57,18 +60,18 @@ class Authentication:
                     if retryPassword:
                         print("Password really is correct")
                         print(f"Welcome {username}")
-                        # Go to Main Menue
+                        MainMenue()
                         break
                     else:
                         print("Tried too many times!")
                         break
                 else:
-                        print(f"Welcome {username}")
-                        break
-
+                    print(f"Welcome {username}")
+                    MainMenue()
+                    break
 
     @staticmethod
-    def ValidateUsername (username: str):
+    def ValidateUsername(username: str):
 
         # Comparison check that inputted username is the same as stored in database
         if username == "meatboyed":
@@ -77,7 +80,7 @@ class Authentication:
             return False
 
     @staticmethod
-    def UsernameRetry ():
+    def UsernameRetry():
 
         for i in range(3):
             username = str(input("Enter Username: "))
@@ -86,11 +89,11 @@ class Authentication:
             if isUsernameValid:
                 print("Username is correct")
                 return True
-        
+
         return False
 
     @staticmethod
-    def PasswordRetry ():
+    def PasswordRetry():
 
         for i in range(3):
             password = getpass.getpass("Enter Password: ")
@@ -99,12 +102,12 @@ class Authentication:
             if isPasswordValid:
                 print("Password is correct")
                 return True
-        
+
         return False
 
     @staticmethod
-    def ValidatePassword (password: str):
-        
+    def ValidatePassword(password: str):
+
         # Ecnrypt password via Encryption lib function
 
         # Comparison check on password in database
@@ -114,6 +117,6 @@ class Authentication:
         else:
             print("password wrong")
             return False
-        
+
 
 Authentication()

@@ -3,7 +3,8 @@ class ViewAccounts:
 
     def __init__(self):
 
-        headerMessage = ("""=========================================================\n=================== Search Accounts =====================\n""")
+        headerMessage = (
+            """=========================================================\n=================== Search Accounts =====================\n""")
         print(headerMessage)
 
         accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
@@ -14,7 +15,7 @@ class ViewAccounts:
             try:
                 selection = int(input(": "))
                 print("---------------------------------------------------------")
-                
+
                 if selection == 1:
                     print("View all accounts")
                     self.ViewAllAccounts()
@@ -32,7 +33,11 @@ class ViewAccounts:
                     self.FindAccountByPassword()
 
                 elif selection == 5:
-                    print("Backing to main Menue")
+                    headerMessage = ("""=========================================================\n===================== Main Menue ========================\n""")
+                    print(headerMessage)
+
+                    accessMessage = ("""1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
+                    print(accessMessage)
                     break
                 else:
                     print("Enter valid selection option")
@@ -41,26 +46,25 @@ class ViewAccounts:
                 print("Enter valid selection option")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
-    
 
     @staticmethod
     def ViewAllAccounts():
 
-        headerMessage = ("""=========================================================""")
+        headerMessage = (
+            """=========================================================""")
         print(headerMessage)
-        
+
         print("Here are all your accounts")
         print("accounts.....")
 
-
         print("---------------------------------------------------------")
-    
+
     @staticmethod
     def FindAccountByName():
 
-        headerMessage = ("""=========================================================""")
+        headerMessage = (
+            """=========================================================""")
         print(headerMessage)
-        
 
         try:
 
@@ -72,19 +76,18 @@ class ViewAccounts:
 
                 print("Here is the account")
                 break
-            
+
         except ValueError:
             print("Enter valid name")
         except Exception as e:
             print("An unexpected error occured!\n", str(e))
 
-
     @staticmethod
     def FindAccountsLinkedToEmail():
 
-        headerMessage = ("""=========================================================""")
+        headerMessage = (
+            """=========================================================""")
         print(headerMessage)
-        
 
         try:
 
@@ -96,19 +99,18 @@ class ViewAccounts:
 
                 print("Here is the account")
                 break
-            
+
         except ValueError:
             print("Enter valid email")
         except Exception as e:
             print("An unexpected error occured!\n", str(e))
 
-
     @staticmethod
     def FindAccountByPassword():
 
-        headerMessage = ("""=========================================================""")
+        headerMessage = (
+            """=========================================================""")
         print(headerMessage)
-        
 
         try:
 
@@ -120,11 +122,8 @@ class ViewAccounts:
 
                 print("Here is the account")
                 break
-            
+
         except ValueError:
             print("Enter valid password")
         except Exception as e:
             print("An unexpected error occured!\n", str(e))
-
-
-ViewAccounts()

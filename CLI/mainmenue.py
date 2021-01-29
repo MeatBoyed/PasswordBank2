@@ -1,12 +1,17 @@
+from viewAccounts import ViewAccounts
+from addAccount import AddAccount
+
 
 class MainMenue:
 
     def __init__(self):
 
-        headerMessage = ("""=========================================================\n===================== Main Menue ========================\n""")
+        headerMessage = (
+            """=========================================================\n===================== Main Menue ========================\n""")
         print(headerMessage)
-        
-        accessMessage = ("""1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
+
+        accessMessage = (
+            """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
         print(accessMessage)
 
         while True:
@@ -14,13 +19,14 @@ class MainMenue:
             try:
                 select = int(input(": "))
                 print("---------------------------------------------------------")
-                
+
                 if select == 1:
-                    print("Viewing Accounts")
-                    break
+                    ViewAccounts()
+
                 elif select == 2:
-                    print("Add accounts")
-                    break
+                    AddAccount()
+                    pass
+
                 elif select == 3:
                     print("Quitting account")
                     break
@@ -33,4 +39,5 @@ class MainMenue:
                 print("An unexpected error occured!\n", str(e))
 
 
-MainMenue()
+if __name__ == "__main__":
+    MainMenue()

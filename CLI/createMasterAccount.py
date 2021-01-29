@@ -11,11 +11,12 @@ class CreateMasterAccount:
 
         while True:
 
-            self.Username()
+            username = self.Username()
 
-            self.Email()
+            email = self.Email()
 
-            self.Password()
+            password = self.Password()
+
             break
 
     @staticmethod
@@ -30,13 +31,14 @@ class CreateMasterAccount:
                 if username == "":
                     print("Username is compulsory!")
                 else:
-                    # Add username to database
                     break
 
             except ValueError:
                 print("Enter a valid Username")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
+
+        return username
 
     @staticmethod
     def Email():
@@ -50,13 +52,14 @@ class CreateMasterAccount:
                 if email == "":
                     print("Email is compulsory!")
                 else:
-                    # Add Email to database
                     break
 
             except ValueError:
                 print("Enter a valid Email")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
+
+        return email
 
     @staticmethod
     def Password():
@@ -86,7 +89,6 @@ class CreateMasterAccount:
                             else:
                                 print("Finished eeyy")
                                 verified = True
-                                # Add to database
                                 break
                         except ValueError:
                             print("Enter a valid Password")
@@ -100,6 +102,8 @@ class CreateMasterAccount:
                 print("Enter a valid Password")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
+
+        return password2
 
 
 CreateMasterAccount()
