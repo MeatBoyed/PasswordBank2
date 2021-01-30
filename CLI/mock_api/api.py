@@ -9,15 +9,15 @@ DB_DATABASE = "passwordbank2"
 
 def CreateMasterAccountTable(username: str, email: str, password: str):
     """
-        Creates MasterAccount Table, and inserts credentials to table.
+    Creates MasterAccount Table, and inserts credentials to table.
 
-            :param username: str
-                Desired username for Master Account
-            :param email: str
-                User's email for Master Account
-            :param password: str
-                Pre-Hashed 64 character string of password
-        """
+        :param username: str
+            Desired username for Master Account
+        :param email: str
+            User's email for Master Account
+        :param password: str
+            Pre-Hashed 64 character string of password
+    """
 
     # Make Connection and cursor
     connection = ""
@@ -58,6 +58,8 @@ def CreateMasterAccountTable(username: str, email: str, password: str):
     except psycopg2.OperationalError as error:
         # Add ErrorHandling class to expose full error message on the user's request
         print("An Opperational Error Occured. Check connection to DataBase!")
+    except Exception as error:
+        print("Error occured: ", str(error))
     finally:
         if (connection):
             cursor.close()

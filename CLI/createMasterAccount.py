@@ -1,5 +1,6 @@
 from getpass import getpass
-from mock_api.encryption import InitiateEncryption
+import os
+from mock_api import encryption
 from mock_api.api import CreateMasterAccountTable
 
 
@@ -14,21 +15,18 @@ class CreateMasterAccount:
         while True:
 
             username = self.GetUsername()
-
             email = self.GetEmail()
-
             password = self.GetPassword()
 
             # Encrypt Password, and get Salts
-            HashedPassword, MasterSalt, CommonSalt = InitiateEncryption(
+            HashedPassword, MasterSalt, CommonSalt = encryption.InitiateEncryption(
                 password)
 
             # Insert credentials to database
-            success = CreateMasterAccountTable(
-                username, email, HashedPassword.hex())
-            print(success)
+            CreateMasterAccountTable(username, email, HashedPassword.hex())
 
             # Output salts to user
+            self.SaltCheck(MasterSalt.hex(), CommonSalt.hex())
 
             break
 
@@ -117,6 +115,40 @@ class CreateMasterAccount:
                 print("An unexpected error occured!\n", str(e))
 
         return password2
+
+    @staticmethod
+    def SaltCheck(MasterSalt, CommonSalt):
+
+        print("---------------------------------------------------------\n")
+        print(
+            f"Add Encryption Salts to your Environment Variables.\nCopy these lines into .bashrc\n\n: Export MASTERSALT='{MasterSalt}'\n: Export COMMONSALT='{CommonSalt}'\n\nLOSING SALT VALUES WILL RESULT TO BEING DENIED ACCESS TO ALL PASSWORDS SAVED\n")
+
+        while True:
+
+            print("---------------------------------------------------------")
+            print("Press 1 to continue after saving Salts")
+
+            try:
+                userSelect = int(input(": "))
+
+                if userSelect == 1:
+                    checkMasterSalt = os.environ.get('MASTERSALT')
+                    checkCommonSalt = os.environ.get('COMMONSALT')
+
+                    if checkMasterSalt == None:
+                        print(
+                            "\nMaster Salt has NOT been added to Environment Variables!")
+                    elif checkCommonSalt == None:
+                        print(
+                            "Common Salt has NOT been added to Environmetn Variables!")
+                    else:
+                        print("Salts sucessfully added!")
+                        break
+
+            except ValueError:
+                print("Enter 1 to continue")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
 
 
 CreateMasterAccount()
