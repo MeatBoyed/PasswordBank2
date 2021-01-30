@@ -11,16 +11,26 @@ class CreateMasterAccount:
 
         while True:
 
-            username = self.Username()
+            username = self.GetUsername()
 
-            email = self.Email()
+            email = self.GetEmail()
 
-            password = self.Password()
+            password = self.GetPassword()
+
+            # Encrypt Password, and get Salts
+            # HashedPassword, MasterSalt, CommonSalt = InitiateEncryption(
+            #     password)
+
+            # print(HashedPassword, MasterSalt, CommonSalt)
+
+            # Insert credentials to database
+
+            # Output salts to user
 
             break
 
     @staticmethod
-    def Username():
+    def GetUsername():
 
         while True:
 
@@ -41,7 +51,7 @@ class CreateMasterAccount:
         return username
 
     @staticmethod
-    def Email():
+    def GetEmail():
 
         while True:
 
@@ -62,7 +72,7 @@ class CreateMasterAccount:
         return email
 
     @staticmethod
-    def Password():
+    def GetPassword():
 
         verified = False
 
