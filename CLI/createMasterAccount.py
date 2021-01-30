@@ -1,4 +1,6 @@
 from getpass import getpass
+from mock_api.encryption import InitiateEncryption
+from mock_api.api import CreateMasterAccountTable
 
 
 class CreateMasterAccount:
@@ -18,12 +20,13 @@ class CreateMasterAccount:
             password = self.GetPassword()
 
             # Encrypt Password, and get Salts
-            # HashedPassword, MasterSalt, CommonSalt = InitiateEncryption(
-            #     password)
-
-            # print(HashedPassword, MasterSalt, CommonSalt)
+            HashedPassword, MasterSalt, CommonSalt = InitiateEncryption(
+                password)
 
             # Insert credentials to database
+            success = CreateMasterAccountTable(
+                username, email, HashedPassword.hex())
+            print(success)
 
             # Output salts to user
 

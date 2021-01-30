@@ -1,5 +1,4 @@
 import base64
-from mock_api.api import CreateMasterAccount
 import os
 import hashlib
 from cryptography.fernet import Fernet
@@ -76,8 +75,7 @@ def CheckPassword():
         return "Inputed the Wrong password, boo!"
 
 
-class InitiateEncryption:
-
+def InitiateEncryption(password: str):
     """
     Generates Master Account's encrypted password and Master and Common Salts.
 
@@ -94,33 +92,16 @@ class InitiateEncryption:
             Salt used to generate Common Password's key password. Unique, DON'T LOSE
     """
 
-    def __init__(self, password: str):
+    # Generate Salts
+    MasterSalt = os.urandom(16)
+    CommonSalt = os.urandom(16)
 
-        # Generate Master and Common Salts
-        MasterSalt, CommonSalt = self.GenerateSalts()
+    # Hash desired Master Account Password
+    HashedPassword = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode('utf-8'),
+        MasterSalt,
+        1000000
+    )
 
-        # Hash desired Master Account Password
-        EncryptedPassword = self.HashMasterAccountPassword(
-            password=password, MasterSalt=MasterSalt)
-
-        return EncryptedPassword, MasterSalt, CommonSalt
-
-    @staticmethod
-    def GenerateSalts():
-
-        MasterSalt = os.urandom(16)
-        CommonSalt = os.urandom(16)
-
-        return MasterSalt, CommonSalt
-
-    @staticmethod
-    def HashMasterAccountPassword(password: str, MasterSalt):
-
-        HashedPassword = hashlib.pbkdf2_hmac(
-            'sha256',
-            password.encode('utf-8'),
-            MasterSalt,
-            1000000
-        )
-
-        return HashedPassword
+    return HashedPassword, MasterSalt, CommonSalt

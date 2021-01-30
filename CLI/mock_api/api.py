@@ -7,17 +7,17 @@ DB_PASSWORD = os.environ.get('DB_PASSWORD')
 DB_DATABASE = "passwordbank2"
 
 
-def CreateMasterAccount(username: str, email: str, password: str):
+def CreateMasterAccountTable(username: str, email: str, password: str):
     """
-    Creates MasterAccount Table, and inserts credentials to table.
+        Creates MasterAccount Table, and inserts credentials to table.
 
-        :param username: str
-            Desired username for Master Account
-        :param email: str
-            User's email for Master Account
-        :param password: str
-            Pre-Hashed 64 character string of password
-    """
+            :param username: str
+                Desired username for Master Account
+            :param email: str
+                User's email for Master Account
+            :param password: str
+                Pre-Hashed 64 character string of password
+        """
 
     # Make Connection and cursor
     connection = ""
@@ -33,7 +33,7 @@ def CreateMasterAccount(username: str, email: str, password: str):
 
     insertCredentialsQuery = f"""
     INSERT INTO masteraccount (username, email, password)
-    VALUES ('{username}', '{email}', '{password}') 
+    VALUES ('{username}', '{email}', '{password}')
     """
 
     try:
@@ -62,3 +62,5 @@ def CreateMasterAccount(username: str, email: str, password: str):
         if (connection):
             cursor.close()
             connection.close()
+
+    return True
