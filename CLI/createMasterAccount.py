@@ -18,10 +18,6 @@ class CreateMasterAccount:
             email = self.GetEmail()
             password = self.GetPassword()
 
-            # username = "meat"
-            # email = "char@gmai.com"
-            # password = "pass123"
-
             # Encrypt Password, and get Salts
             HashedPassword, MasterSalt, CommonSalt = encryption.InitiateEncryption(
                 password)
@@ -47,7 +43,7 @@ class CreateMasterAccount:
             else:
                 # Output salts to user
                 self.SaltCheck(MasterSalt.hex(), CommonSalt.hex())
-
+                break
                 # Redirect to Authentication
 
     @staticmethod
@@ -139,7 +135,7 @@ class CreateMasterAccount:
 
         print("---------------------------------------------------------\n")
         print(
-            f"Add Encryption Salts to your Environment Variables.\nCopy these lines into .bashrc\n\n: Export MASTERSALT='{MasterSalt}'\n: Export COMMONSALT='{CommonSalt}'\n\nLOSING SALT VALUES WILL RESULT TO BEING DENIED ACCESS TO ALL PASSWORDS SAVED\n")
+            f"Add Encryption Salts to your Environment Variables.\nCopy these lines into .bashrc\n\n: export MASTERSALT='{MasterSalt}'\n: export COMMONSALT='{CommonSalt}'\n\nLOSING SALT VALUES WILL RESULT TO BEING DENIED ACCESS TO ALL PASSWORDS SAVED\n")
 
         while True:
 
@@ -150,18 +146,9 @@ class CreateMasterAccount:
                 userSelect = int(input(": "))
 
                 if userSelect == 1:
-                    checkMasterSalt = os.environ.get('MASTERSALT')
-                    checkCommonSalt = os.environ.get('COMMONSALT')
-
-                    if checkMasterSalt == None:
-                        print(
-                            "\nMaster Salt has NOT been added to Environment Variables!")
-                    elif checkCommonSalt == None:
-                        print(
-                            "Common Salt has NOT been added to Environmetn Variables!")
-                    else:
-                        print("Salts sucessfully added!")
-                        break
+                    print("Please restart you terminal for everything to take effect.")
+                    print("Bye, bye!")
+                    break
 
             except ValueError:
                 print("Enter 1 to continue")

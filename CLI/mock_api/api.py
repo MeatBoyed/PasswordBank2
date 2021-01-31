@@ -34,8 +34,6 @@ def ConnectToDatabase():
         connection = None
         ErrorHandler(error)
 
-    print("Connected")
-
     return connection, response
 
 
@@ -75,6 +73,7 @@ def CreateMasterAccountTable(username: str, email: str, password: str):
         try:
             cursor.execute("DROP TABLE IF EXISTS masteraccount")
             cursor.execute(createMasterTableQuery)
+            print("Table deleted")
         except Exception as error:
             connection.rollback()
             response = "unkownError"
