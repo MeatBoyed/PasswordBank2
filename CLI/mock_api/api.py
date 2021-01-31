@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 import psycopg2
 
@@ -98,7 +99,45 @@ def CreateMasterAccountTable(username: str, email: str, password: str):
     return response
 
 
+def VerifyMasterAccountUsername(username: str):
+    """
+    Verify user's inputed username to username in MasterTable
+
+    :param username:
+        Username to be compared inputed by user
+
+    :return response:
+        Response contains any collected error messages, and if verification is correct.
+    """
+
+    connection, response = ConnectToDatabase()
+
+    MasterUsername = ""
+
+    # Select Username from Database
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute("SELECT username FROM masteraccount")
+            MasterUsername = cursor.fetchone()[0]
+
+            if MasterUsername.lower() == username.lower():
+                response = "correctUsername"
+            else:
+                response = "wrongUsername"
+
+        except Exception as error:
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+    return response
+
+
 def ErrorHandler(err):
+
     # get details about the exception
     err_type, err_obj, traceback = sys.exc_info()
 
