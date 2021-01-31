@@ -1,4 +1,5 @@
 import getpass
+from mock_api.api import VerifyMasterAccountUsername, VerifyMasterAccountPassword
 from mainMenue import MainMenue
 
 
@@ -13,47 +14,26 @@ class Authentication:
         print(welcomeMessage)
 
         # Prompt for Master Account credentials
-
         while True:
 
             username = str(input("Enter Username: "))
-            isUsernameValid = self.ValidateUsername(username)
+            isUsernameValid = VerifyMasterAccountUsername(username)
 
-            if isUsernameValid != True:
-
-                # Give user 3 trys to input username correct
-                retryUsername = self.UsernameRetry()
-
-                if retryUsername:
-                    print("Username really is correct")
-
-                    password = getpass.getpass("Enter Password: ")
-                    isPasswordValid = self.ValidatePassword(password)
-
-                    if isPasswordValid != True:
-
-                        retryPassword = self.PasswordRetry()
-
-                        if retryPassword:
-                            print("Password really is correct")
-                            print(f"Welcome {username}")
-                            MainMenue()
-                            break
-                        else:
-                            print("Tried too many times!")
-                            break
-
-                else:
-                    print("Tried too many times!")
-                    break
-            else:
+            # Correct
+            if isUsernameValid == "correctUsername":
                 print("correct username")
 
                 password = getpass.getpass("Enter Password: ")
-                isPasswordValid = self.ValidatePassword(password)
+                isPasswordValid = VerifyMasterAccountPassword(password)
 
-                if isPasswordValid != True:
+                # password correct
+                if isPasswordValid == "correctPassword":
+                    print(f"Welcome {username}")
+                    MainMenue()
+                    break
 
+                # passowrd false
+                elif isPasswordValid == "wrongPassword":
                     # Gives user 3 tries to input username correctly
                     retryPassword = self.PasswordRetry()
 
@@ -65,30 +45,53 @@ class Authentication:
                     else:
                         print("Tried too many times!")
                         break
+
+                elif isPasswordValid == "unknownError":
+                    continue
+
+            # Wrong username
+            elif isUsernameValid == "wrongUsername":
+                # Give user 3 trys to input username correct
+                retryUsername = self.UsernameRetry()
+
+                if retryUsername:
+                    print("Username really is correct")
+
+                    password = getpass.getpass("Enter Password: ")
+                    isPasswordValid = VerifyMasterAccountPassword(password)
+
+                    if isPasswordValid == "wrongPassword":
+
+                        retryPassword = self.PasswordRetry()
+
+                        if retryPassword:
+                            print("Password really is correct")
+                            print(f"Welcome {username}")
+                            MainMenue()
+                            break
+                        else:
+                            print("Tried too many times!")
+                            break
+                    elif isPasswordValid == "unkownError":
+                        continue
                 else:
-                    print(f"Welcome {username}")
-                    MainMenue()
+                    print("Tried too many times!")
                     break
-
-    @staticmethod
-    def ValidateUsername(username: str):
-
-        # Comparison check that inputted username is the same as stored in database
-        if username == "meatboyed":
-            return True
-        else:
-            return False
+            elif isUsernameValid == "unkownError":
+                continue
 
     @staticmethod
     def UsernameRetry():
 
         for i in range(3):
             username = str(input("Enter Username: "))
-            isUsernameValid = Authentication.ValidateUsername(username)
+            isUsernameValid = VerifyMasterAccountUsername(username)
 
-            if isUsernameValid:
+            if isUsernameValid == "correctUsername":
                 print("Username is correct")
                 return True
+            elif isUsernameValid == "unkownError":
+                break
 
         return False
 
@@ -97,11 +100,13 @@ class Authentication:
 
         for i in range(3):
             password = getpass.getpass("Enter Password: ")
-            isPasswordValid = Authentication.ValidatePassword(password)
+            isPasswordValid = VerifyMasterAccountPassword(password)
 
-            if isPasswordValid:
+            if isPasswordValid == "correctPassword":
                 print("Password is correct")
                 return True
+            elif isPasswordValid == "wrongPassowrd":
+                break
 
         return False
 

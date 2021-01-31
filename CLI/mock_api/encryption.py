@@ -108,19 +108,18 @@ def InitiateEncryption(password: str):
 
 
 def HashMasterPassword(password):
-
     """
     Hashes the entered password
 
     :param password:
         Desired password to be hased
-    
+
     :return HashedPassword:
         Hashed password, in Hex
     """
 
     # Get Msater Salt
-    MasterSalt = os.environ.get('MASTERSALT')
+    MasterSalt = bytes.fromhex(os.environ.get('MASTERSALT'))
 
     # Hash Password
     HashedPassword = hashlib.pbkdf2_hmac(
