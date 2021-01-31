@@ -1,7 +1,7 @@
 import os
-import re
 import sys
 import psycopg2
+from .encryption import HashMasterPassword
 
 DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
@@ -33,6 +33,8 @@ def ConnectToDatabase():
         response = "unkownError"
         connection = None
         ErrorHandler(error)
+
+    print("Connected")
 
     return connection, response
 
@@ -158,11 +160,11 @@ def VerifyMasterAccountPassword(password: str):
 
         try:
 
-            cursor.execute("")
-            MasterAccountPassword = bytes.fromhex(cursor.fetchone()[0])
+            cursor.execute("SELECT password FROM masteraccount")
+            MasterAccountPassword = cursor.fetchone()[0]
 
             # Hash Password param value
-            hashedPassword = ""
+            hashedPassword = HashMasterPassword(password)
 
             # Compare passwords
             if MasterAccountPassword == hashedPassword:
