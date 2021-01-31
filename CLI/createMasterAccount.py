@@ -1,5 +1,5 @@
-from getpass import getpass
 import os
+from getpass import getpass
 from mock_api import encryption
 from mock_api.api import CreateMasterAccountTable
 
@@ -18,17 +18,37 @@ class CreateMasterAccount:
             email = self.GetEmail()
             password = self.GetPassword()
 
+            # username = "meat"
+            # email = "char@gmai.com"
+            # password = "pass123"
+
             # Encrypt Password, and get Salts
             HashedPassword, MasterSalt, CommonSalt = encryption.InitiateEncryption(
                 password)
 
             # Insert credentials to database
-            CreateMasterAccountTable(username, email, HashedPassword.hex())
+            response = CreateMasterAccountTable(
+                username, email, HashedPassword.hex())
 
-            # Output salts to user
-            self.SaltCheck(MasterSalt.hex(), CommonSalt.hex())
+            if response == "connectionError":
+                print("\n---------------------------------------------------------")
+                print(
+                    "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+                print("Try again....\n")
+                print("---------------------------------------------------------")
+            elif response == "emailViolationError":
+                print("\n---------------------------------------------------------")
+                print(
+                    "Email entered is not valid.")
+                print("Try again....\n")
+                print("---------------------------------------------------------")
+            elif response == "unkownError":
+                continue
+            else:
+                # Output salts to user
+                self.SaltCheck(MasterSalt.hex(), CommonSalt.hex())
 
-            break
+                # Redirect to Authentication
 
     @staticmethod
     def GetUsername():
@@ -87,12 +107,10 @@ class CreateMasterAccount:
                     print("Password is compulsory!")
                 else:
 
-                    print("Re-eneter Password")
-
                     while True:
 
                         try:
-                            password2 = getpass("Enter Password again: ")
+                            password2 = getpass("Re-Enter Password again: ")
 
                             if password2 == "" or password1 != password2:
                                 print("Password entery failed. Try again")

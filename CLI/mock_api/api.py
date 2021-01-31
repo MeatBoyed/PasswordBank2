@@ -1,5 +1,7 @@
-import psycopg2
 import os
+import re
+import sys
+import psycopg2
 
 DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
@@ -19,9 +21,9 @@ def CreateMasterAccountTable(username: str, email: str, password: str):
             Pre-Hashed 64 character string of password
     """
 
-    # Make Connection and cursor
-    connection = ""
-    cursor = ""
+    response = ""
+
+    connection = None
 
     createMasterTableQuery = """
     CREATE TABLE masteraccount (
@@ -36,33 +38,68 @@ def CreateMasterAccountTable(username: str, email: str, password: str):
     VALUES ('{username}', '{email}', '{password}')
     """
 
+    # Try connecting to databse
     try:
-
         connection = psycopg2.connect(
             host=DB_HOST, user=DB_USER, password=DB_PASSWORD, database=DB_DATABASE)
+
+    except psycopg2.OperationalError as error:
+        response = "connectionError"
+        connection = None
+    except Exception as error:
+        response = "unkownError"
+        connection = None
+        ErrorHandler(error)
+
+    # If connection is good, then execute queries
+    if connection != None:
+
         cursor = connection.cursor()
 
         # Delete existing Master Account Table, and (re)create Master Account Table
-        cursor.execute("DROP TABLE IF EXISTS masteraccount")
-        cursor.execute(createMasterTableQuery)
+        try:
+            cursor.execute("DROP TABLE IF EXISTS masteraccount")
+            cursor.execute(createMasterTableQuery)
+        except Exception as error:
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        # Insert credentials to table
+        try:
+            cursor.execute(insertCredentialsQuery)
+        except psycopg2.errors.CheckViolation as error:
+            response = "emailViolationError"
+            connection.rollback()
+        except Exception as error:
+            # Add handler for invalid email
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
         connection.commit()
-        print("Created table")
 
-        # Insert credentials to Master Account Table
-        # TODO catch Insertion errors
-        cursor.execute(insertCredentialsQuery)
-        connection.commit()
-        print("Inserted credentials to table")
+        cursor.close()
+        connection.close()
+        print("Commited and closed")
 
-    # Add full Exeption handling
-    except psycopg2.OperationalError as error:
-        # Add ErrorHandling class to expose full error message on the user's request
-        print("An Opperational Error Occured. Check connection to DataBase!")
-    except Exception as error:
-        print("Error occured: ", str(error))
-    finally:
-        if (connection):
-            cursor.close()
-            connection.close()
+    return response
 
-    return True
+
+def ErrorHandler(err):
+    # get details about the exception
+    err_type, err_obj, traceback = sys.exc_info()
+
+    print("\n---------------------------------------------------------")
+    print(
+        "An unkown error occured! Here is more detail\n")
+    print("---------------------------------------------------------")
+
+    print("\npsycopg2 ERROR:", err)
+    print("psycopg2 traceback:", traceback, "-- type:", err_type)
+
+    # psycopg2 extensions.Diagnostics object attribute
+    print("\nextensions.Diagnostics:", err.diag)
+
+    print("Let's try again\n")
+    print("---------------------------------------------------------")
