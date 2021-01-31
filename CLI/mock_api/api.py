@@ -133,6 +133,50 @@ def VerifyMasterAccountUsername(username: str):
             response = "unkownError"
             ErrorHandler(error)
 
+        cursor.close()
+        connection.close()
+
+    return response
+
+
+def VerifyMasterAccountPassword(password: str):
+    """
+    Verify user's inputed password to password in MasterTable
+
+    :param password:
+        Password to be compared inputed by user
+
+    :return response:
+        Response contains any collected error messages, and if verification is correct.
+    """
+
+    connection, response = ConnectToDatabase()
+
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        try:
+
+            cursor.execute("")
+            MasterAccountPassword = bytes.fromhex(cursor.fetchone()[0])
+
+            # Hash Password param value
+            hashedPassword = ""
+
+            # Compare passwords
+            if MasterAccountPassword == hashedPassword:
+                response = "correctPassword"
+            else:
+                response = "wrongPassword"
+        except Exception as error:
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        cursor.close()
+        connection.close()
+
     return response
 
 
