@@ -6,75 +6,6 @@ from cryptography.hazmat.primitives import hashes, kdf
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
-def generatePasswordKey(passy: str, ):
-
-    password = passy.encode()
-    salt = "6233881238891239999888".encode()
-
-    print(f"Salt: {salt}")
-
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=salt,
-        iterations=10000000
-    )
-    print(f"KDF: {kdf}")
-
-    key = base64.urlsafe_b64encode(kdf.derive(password))
-    print(f"Key: {key}")
-
-    # with open("passKey.txt", "wb") as KeyFile:
-    #     KeyFile.write(key)
-
-    return key
-
-
-def getPasswordKey():
-
-    with open("passKey.txt", "rb") as KeyFile:
-        key = KeyFile.read()
-
-    return key
-
-
-def EncryptWithPassword(text: str):
-
-    passwordKey = getPasswordKey()
-
-    fer = Fernet(passwordKey)
-
-    encryptedMessage = fer.encrypt(text.encode())
-
-    return encryptedMessage
-
-
-def DecryptWithPassword(text: str):
-
-    passwordKey = getPasswordKey()
-
-    fer = Fernet(passwordKey)
-
-    decrptedMessage = fer.decrypt(text.encode())
-
-    return decrptedMessage
-
-
-def CheckPassword():
-
-    passwordKey = getPasswordKey()
-
-    userPass = getpass("Password: ")
-    userKey = generatePasswordKey(userPass)
-
-    print(f"UserKey: {userKey}\n PassKey: {passwordKey}")
-
-    if userKey == passwordKey:
-        return "Inputed the correct password, yay!"
-    else:
-        return "Inputed the Wrong password, boo!"
-
-
 def InitiateEncryption(password: str):
     """
     Generates Master Account's encrypted password and Master and Common Salts.
@@ -104,10 +35,17 @@ def InitiateEncryption(password: str):
         1000000
     )
 
-    return HashedPassword, MasterSalt, CommonSalt
+    # Create Common password key
+    CommonPassword = password + "8@bQVxWgRoQb*y8d%8gSqV%RXPu9ufchbqa%^M%uwV52gVv9A"
+
+    kdf = PBKDF2HMAC(algorithm=hashes.SHA256, length=32,
+                     salt=CommonSalt, iterations=1000000)
+    CommonKey = base64.urlsafe_b64encode(kdf.derive(CommonPassword))
+
+    return HashedPassword, MasterSalt, CommonKey
 
 
-def HashMasterPassword(password):
+def HashMasterPassword(password: str):
     """
     Hashes the entered password
 
@@ -130,3 +68,6 @@ def HashMasterPassword(password):
     )
 
     return HashedPassword.hex()
+
+
+def EncryptAccountPassword(password: str):

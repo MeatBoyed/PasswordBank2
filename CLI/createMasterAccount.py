@@ -19,7 +19,7 @@ class CreateMasterAccount:
             password = self.GetPassword()
 
             # Encrypt Password, and get Salts
-            HashedPassword, MasterSalt, CommonSalt = encryption.InitiateEncryption(
+            HashedPassword, MasterSalt, CommonKey = encryption.InitiateEncryption(
                 password)
 
             # Insert credentials to database
@@ -42,7 +42,7 @@ class CreateMasterAccount:
                 continue
             else:
                 # Output salts to user
-                self.SaltCheck(MasterSalt.hex(), CommonSalt.hex())
+                self.SaltCheck(MasterSalt.hex(), CommonKey.hex())
                 break
                 # Redirect to Authentication
 
@@ -131,16 +131,16 @@ class CreateMasterAccount:
         return password2
 
     @staticmethod
-    def SaltCheck(MasterSalt, CommonSalt):
+    def SaltCheck(MasterSalt, CommonKey):
 
         print("---------------------------------------------------------\n")
         print(
-            f"Add Encryption Salts to your Environment Variables.\nCopy these lines into .bashrc\n\n: export MASTERSALT='{MasterSalt}'\n: export COMMONSALT='{CommonSalt}'\n\nLOSING SALT VALUES WILL RESULT TO BEING DENIED ACCESS TO ALL PASSWORDS SAVED\n")
+            f"Add Encryption Salt and Common Encryption Key to your Environment Variables.\nCopy these lines into .bashrc\n\n: export MASTERSALT='{MasterSalt}'\n: export COMMONKEY='{CommonKey}'\n\nLOSING SALT and Common Key VALUES WILL RESULT TO BEING DENIED ACCESS TO ALL PASSWORDS SAVED\n")
 
         while True:
 
             print("---------------------------------------------------------")
-            print("Press 1 to continue after saving Salts")
+            print("Press 1 to continue after saving Salt and Common Key")
 
             try:
                 userSelect = int(input(": "))
