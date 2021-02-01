@@ -69,3 +69,21 @@ def HashMasterPassword(password: str):
     )
 
     return HashedPassword.hex()
+
+
+def EncryptAccountPassword(password: str):
+
+    key = bytes.fromhex(os.environ.get('COMMONKEY'))
+
+    encryptedPassword = Fernet(key).encrypt(password.encode('utf-8'))
+
+    return encryptedPassword
+
+
+def DecryptAccountPassword(encryptedPassword):
+
+    key = bytes.fromhex(os.environ.get('COMMONKEY'))
+
+    decryptedPassword = Fernet(key).decrypt(encryptedPassword)
+
+    return decryptedPassword
