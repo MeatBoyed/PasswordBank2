@@ -110,18 +110,5 @@ class Authentication:
 
         return False
 
-    @staticmethod
-    def ValidatePassword(password: str):
-
-        # Ecnrypt password via Encryption lib function
-
-        # Comparison check on password in database
-        if password == "pass123":
-            print("passowrd correct")
-            return True
-        else:
-            print("password wrong")
-            return False
-
 
 Authentication()

@@ -40,7 +40,8 @@ def InitiateEncryption(password: str):
 
     kdf = PBKDF2HMAC(algorithm=hashes.SHA256, length=32,
                      salt=CommonSalt, iterations=1000000)
-    CommonKey = base64.urlsafe_b64encode(kdf.derive(CommonPassword))
+    CommonKey = base64.urlsafe_b64encode(
+        kdf.derive(CommonPassword.encode('utf-8')))
 
     return HashedPassword, MasterSalt, CommonKey
 
@@ -68,6 +69,3 @@ def HashMasterPassword(password: str):
     )
 
     return HashedPassword.hex()
-
-
-def EncryptAccountPassword(password: str):
