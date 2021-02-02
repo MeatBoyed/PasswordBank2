@@ -33,10 +33,12 @@ class ViewAccounts:
                     self.FindAccountByPassword()
 
                 elif selection == 5:
-                    headerMessage = ("""=========================================================\n===================== Main Menue ========================\n""")
+                    headerMessage = (
+                        """=========================================================\n===================== Main Menue ========================\n""")
                     print(headerMessage)
 
-                    accessMessage = ("""1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
+                    accessMessage = (
+                        """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
                     print(accessMessage)
                     break
                 else:
@@ -54,6 +56,9 @@ class ViewAccounts:
             """=========================================================""")
         print(headerMessage)
 
+        # Get accounts
+
+        # Print accounts
         print("Here are all your accounts")
         print("accounts.....")
 
@@ -127,3 +132,6 @@ class ViewAccounts:
             print("Enter valid password")
         except Exception as e:
             print("An unexpected error occured!\n", str(e))
+
+
+ViewAccounts()

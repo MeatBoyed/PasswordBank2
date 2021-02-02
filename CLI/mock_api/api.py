@@ -1,7 +1,8 @@
 import os
 import sys
 import psycopg2
-from .encryption import HashMasterPassword
+import pandas as pd
+# from .encryption import HashMasterPassword
 
 DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')
@@ -174,6 +175,27 @@ def CreateAccount(sitename: str, email: str, password: str, url=""):
         print("Account added")
 
     return response
+
+
+def GetAllAccounts():
+
+    connection, response = ConnectToDatabase()
+
+    accountsTable = None
+
+    if connection != None:
+
+        try:
+            accountsTable = pd.read_sql(
+                "SELECT sitename, email FROM accounts", connection)
+        except Exception as error:
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        connection.close()
+
+    return accountsTable, response
 
 
 def VerifyMasterAccountUsername(username: str):
