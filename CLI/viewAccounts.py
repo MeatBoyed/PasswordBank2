@@ -9,7 +9,8 @@ class ViewAccounts:
             """=========================================================\n=================== Search Accounts =====================\n""")
         print(headerMessage)
 
-        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        accessMessage = (
+            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n5: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
         while True:
@@ -19,20 +20,13 @@ class ViewAccounts:
                 print("---------------------------------------------------------")
 
                 if selection == 1:
-                    print("View all accounts")
                     self.ViewAllAccounts()
 
                 elif selection == 2:
-                    print("Find accounts by name")
                     self.FindAccountByName()
 
                 elif selection == 3:
-                    print("Find accounts linked to email")
                     self.FindAccountsLinkedToEmail()
-
-                elif selection == 4:
-                    print("Find accounts linked to password")
-                    self.FindAccountByPassword()
 
                 elif selection == 5:
                     headerMessage = (
@@ -160,29 +154,6 @@ class ViewAccounts:
 
         accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
-
-    @staticmethod
-    def FindAccountByPassword():
-
-        headerMessage = (
-            """=========================================================""")
-        print(headerMessage)
-
-        try:
-
-            while True:
-                searchPassword = str(input("Password: "))
-                print("---------------------------------------------------------")
-
-                print(searchPassword)
-
-                print("Here is the account")
-                break
-
-        except ValueError:
-            print("Enter valid password")
-        except Exception as e:
-            print("An unexpected error occured!\n", str(e))
 
     @staticmethod
     def GetSitename():
