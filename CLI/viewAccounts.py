@@ -1,3 +1,5 @@
+from mock_api.api import GetAllAccounts
+
 
 class ViewAccounts:
 
@@ -52,17 +54,21 @@ class ViewAccounts:
     @staticmethod
     def ViewAllAccounts():
 
-        headerMessage = (
-            """=========================================================""")
-        print(headerMessage)
+        header = (
+            """=========================================================\n""")
+        print(header)
 
         # Get accounts
+        accountsTable, response = GetAllAccounts()
 
-        # Print accounts
-        print("Here are all your accounts")
-        print("accounts.....")
+        print(accountsTable)
 
-        print("---------------------------------------------------------")
+        headerMessage = (
+            """=========================================================\n=================== Search Accounts =====================\n""")
+        print(headerMessage)
+
+        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        print(accessMessage)
 
     @staticmethod
     def FindAccountByName():
