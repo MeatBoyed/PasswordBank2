@@ -100,6 +100,82 @@ def CreateMasterAccountTable(username: str, email: str, password: str):
     return response
 
 
+def CreateAccount(sitename: str, email: str, password: str, url=""):
+
+    # Connect to Database
+    connection, response = ConnectToDatabase()
+
+    createAccountTable = """
+    CREATE TABLE accounts (
+        id BIGSERIAL PRIMARY KEY NOT NULL,
+        sitename VARCHAR(225) NOT NULL,
+        url TEXT NOT NULL,
+        email email NOT NULL,
+        password TEXT NOT NULL
+    )
+    """
+
+    insertAccountCredentials = f"""
+    INSERT INTO accounts (sitename, url, email, password)
+    VALUES ('{sitename}', '{url}', '{email}', '{password}')
+    """
+
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        # Check that accounts table exists
+        cursor.execute(
+            "SELECT relname FROM pg_class WHERE relname = 'accounts' ")
+        tableExists = cursor.fetchall()
+
+        # Table exists
+        if tableExists != []:
+
+            # Insert into Table
+            try:
+                cursor.execute(insertAccountCredentials)
+            except psycopg2.errors.CheckViolation as error:
+                response = "emailViolationError"
+                connection.rollback()
+            except Exception as error:
+                # Add handler for invalid email
+                connection.rollback()
+                response = "unkownError"
+                ErrorHandler(error)
+
+        else:
+
+            # Create accounts table
+            try:
+                cursor.execute(createAccountTable)
+                print("Table deleted")
+            except Exception as error:
+                connection.rollback()
+                response = "unkownError"
+                ErrorHandler(error)
+
+            # Insert into Table
+            try:
+                cursor.execute(insertAccountCredentials)
+            except psycopg2.errors.CheckViolation as error:
+                response = "emailViolationError"
+                connection.rollback()
+            except Exception as error:
+                # Add handler for invalid email
+                connection.rollback()
+                response = "unkownError"
+                ErrorHandler(error)
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+        print("Account added")
+
+    return response
+
+
 def VerifyMasterAccountUsername(username: str):
     """
     Verify user's inputed username to username in MasterTable
@@ -193,9 +269,17 @@ def ErrorHandler(err):
 
     print("\npsycopg2 ERROR:", err)
     print("psycopg2 traceback:", traceback, "-- type:", err_type)
+    print("Error occured on line: ", traceback.tb_lineno)
 
     # psycopg2 extensions.Diagnostics object attribute
     print("\nextensions.Diagnostics:", err.diag)
 
     print("Let's try again\n")
     print("---------------------------------------------------------")
+
+
+CreateAccount(sitename="Spotify", email="a@gmail.com", password="hdsjashdj")
+CreateAccount(sitename="VS CODE", email="a@gmil.com", password="hdsjashdj")
+CreateAccount(sitename="Notion", email="a@gma.com", password="hashdj")
+CreateAccount(sitename="Guitar Hub", url="skdjfhdsjf.com",
+              email="a@gmail.com", password="hdsjashdj")
