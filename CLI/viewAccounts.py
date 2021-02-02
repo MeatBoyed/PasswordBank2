@@ -1,4 +1,4 @@
-from mock_api.api import GetAllAccounts
+from mock_api import api
 
 
 class ViewAccounts:
@@ -59,7 +59,7 @@ class ViewAccounts:
         print(header)
 
         # Get accounts
-        accountsTable, response = GetAllAccounts()
+        accountsTable, response = api.GetAllAccounts()
 
         if response == "":
             print(accountsTable)
@@ -76,8 +76,6 @@ class ViewAccounts:
             print("Try again....\n")
             print("---------------------------------------------------------")
 
-        print(accountsTable)
-
         headerMessage = (
             """=========================================================\n=================== Search Accounts =====================\n""")
         print(headerMessage)
@@ -92,21 +90,37 @@ class ViewAccounts:
             """=========================================================""")
         print(headerMessage)
 
-        try:
+        searchName = ViewAccounts.GetSitename()
 
-            while True:
-                searchName = str(input("Name: "))
-                print("---------------------------------------------------------")
+        account, response = api.SearchAccountsBySitename(searchName)
 
-                print(searchName)
+        if response == "":
 
-                print("Here is the account")
-                break
+            if account.empty:
+                print("\n---------------------------------------------------------")
+                print("No Account matching that name\n")
+            else:
+                print(account)
 
-        except ValueError:
-            print("Enter valid name")
-        except Exception as e:
-            print("An unexpected error occured!\n", str(e))
+        elif response == "connectionError":
+            print("\n---------------------------------------------------------")
+            print(
+                "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "emailViolationError":
+            print("\n---------------------------------------------------------")
+            print(
+                "Email entered is not valid.")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+
+        headerMessage = (
+            """=========================================================\n=================== Search Accounts =====================\n""")
+        print(headerMessage)
+
+        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        print(accessMessage)
 
     @staticmethod
     def FindAccountsLinkedToEmail():
@@ -153,6 +167,27 @@ class ViewAccounts:
             print("Enter valid password")
         except Exception as e:
             print("An unexpected error occured!\n", str(e))
+
+    @staticmethod
+    def GetSitename():
+
+        while True:
+
+            try:
+
+                sitename = str(input("Site's name: "))
+
+                if sitename == "":
+                    print("Enter the site's name")
+                else:
+                    break
+
+            except ValueError:
+                print("Enter a valid sitename")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return sitename
 
 
 ViewAccounts()
