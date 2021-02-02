@@ -61,6 +61,21 @@ class ViewAccounts:
         # Get accounts
         accountsTable, response = GetAllAccounts()
 
+        if response == "":
+            print(accountsTable)
+        elif response == "connectionError":
+            print("\n---------------------------------------------------------")
+            print(
+                "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "emailViolationError":
+            print("\n---------------------------------------------------------")
+            print(
+                "Email entered is not valid.")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+
         print(accountsTable)
 
         headerMessage = (
