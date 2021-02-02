@@ -222,6 +222,30 @@ def SearchAccountsBySitename(sitename: str):
     return account, response
 
 
+def SearchAccountsByEmail(email: str):
+
+    connection, response = ConnectToDatabase()
+
+    account = None
+
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        try:
+            account = pd.read_sql(
+                f"SELECT sitename, email FROM accounts WHERE email = '{email}' ", connection)
+        except Exception as error:
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        cursor.close()
+        connection.close()
+
+    return account, response
+
+
 def VerifyMasterAccountUsername(username: str):
     """
     Verify user's inputed username to username in MasterTable

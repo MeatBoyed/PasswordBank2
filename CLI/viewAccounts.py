@@ -129,21 +129,37 @@ class ViewAccounts:
             """=========================================================""")
         print(headerMessage)
 
-        try:
+        searchEmail = ViewAccounts.GetAccountEmail()
 
-            while True:
-                searchEmail = str(input("Email: "))
-                print("---------------------------------------------------------")
+        account, response = api.SearchAccountsByEmail(searchEmail)
 
-                print(searchEmail)
+        if response == "":
 
-                print("Here is the account")
-                break
+            if account.empty:
+                print("\n---------------------------------------------------------")
+                print("No Account matching that Email\n")
+            else:
+                print("\n", account, "\n")
 
-        except ValueError:
-            print("Enter valid email")
-        except Exception as e:
-            print("An unexpected error occured!\n", str(e))
+        elif response == "connectionError":
+            print("\n---------------------------------------------------------")
+            print(
+                "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "emailViolationError":
+            print("\n---------------------------------------------------------")
+            print(
+                "Email entered is not valid.")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+
+        headerMessage = (
+            """=========================================================\n=================== Search Accounts =====================\n""")
+        print(headerMessage)
+
+        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        print(accessMessage)
 
     @staticmethod
     def FindAccountByPassword():
@@ -188,6 +204,27 @@ class ViewAccounts:
                 print("An unexpected error occured!\n", str(e))
 
         return sitename
+
+    @staticmethod
+    def GetAccountEmail():
+
+        while True:
+
+            try:
+
+                email = str(input("Email: "))
+
+                if email == "":
+                    print("Enter email")
+                else:
+                    break
+
+            except ValueError:
+                print("Enter a valid Username")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return email
 
 
 ViewAccounts()
