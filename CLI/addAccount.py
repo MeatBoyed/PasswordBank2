@@ -1,4 +1,6 @@
+from mock_api.api import CreateAccount
 from getpass import getpass
+from mock_api.encryption import EncryptAccountPassword
 
 
 def AddAccountMenue():
@@ -45,7 +47,7 @@ def AddAccount():
     print(80*"=")
     print(27 * "=", " Create Account ", 35 * "=")
 
-    def GetAccountname():
+    def GetSitename():
 
         while True:
 
@@ -84,6 +86,26 @@ def AddAccount():
                 print("An unexpected error occured!\n", str(e))
 
         return accountUrl
+
+    def GetAccountEmail():
+
+        while True:
+
+            try:
+
+                email = str(input("Email: "))
+
+                if email == "":
+                    print("Account name can't be empty")
+                else:
+                    break
+
+            except ValueError:
+                print("Enter a valid Username")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return email
 
     def GetAccountPassword():
 
@@ -128,13 +150,37 @@ def AddAccount():
 
     while True:
 
-        accountName = GetAccountname()
+        sitename = GetSitename()
         accountUrl = GetAccountURL()
+        accountEmail = GetAccountEmail()
         accountPassword = GetAccountPassword()
 
         # Encrypt password
+        encryptedAccountPassowrd = EncryptAccountPassword(
+            accountPassword).hex()
 
         # Add account to Database
+        if accountUrl == "":
+            response = CreateAccount(
+                sitename=sitename, email=accountEmail, password=encryptedAccountPassowrd)
+        else:
+            response = CreateAccount(
+                sitename=sitename, url=accountUrl, email=accountEmail, password=accountPassword)
+
+        if response == "connectionError":
+            print("\n---------------------------------------------------------")
+            print(
+                "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "emailViolationError":
+            print("\n---------------------------------------------------------")
+            print(
+                "Email entered is not valid.")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "unkownError":
+            continue
 
         print(80 * "=")
         accessMessage = (

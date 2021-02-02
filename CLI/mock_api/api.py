@@ -276,10 +276,3 @@ def ErrorHandler(err):
 
     print("Let's try again\n")
     print("---------------------------------------------------------")
-
-
-CreateAccount(sitename="Spotify", email="a@gmail.com", password="hdsjashdj")
-CreateAccount(sitename="VS CODE", email="a@gmil.com", password="hdsjashdj")
-CreateAccount(sitename="Notion", email="a@gma.com", password="hashdj")
-CreateAccount(sitename="Guitar Hub", url="skdjfhdsjf.com",
-              email="a@gmail.com", password="hdsjashdj")
