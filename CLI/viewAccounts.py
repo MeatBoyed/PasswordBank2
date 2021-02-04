@@ -18,35 +18,29 @@ class ViewAccounts:
 
         while True:
 
-            try:
-                selection = int(input(": "))
-                print("---------------------------------------------------------")
+            selection = GetSelection()
+            print("---------------------------------------------------------")
 
-                if selection == 1:
-                    self.ViewAllAccounts()
+            if selection == 1:
+                self.ViewAllAccounts()
 
-                elif selection == 2:
-                    self.FindAccountByName()
+            elif selection == 2:
+                self.FindAccountByName()
 
-                elif selection == 3:
-                    self.FindAccountsLinkedToEmail()
+            elif selection == 3:
+                self.FindAccountsLinkedToEmail()
 
-                elif selection == 4:
-                    headerMessage = (
-                        """=========================================================\n===================== Main Menue ========================\n""")
-                    print(headerMessage)
+            elif selection == 4:
+                headerMessage = (
+                    """=========================================================\n===================== Main Menue ========================\n""")
+                print(headerMessage)
 
-                    accessMessage = (
-                        """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
-                    print(accessMessage)
-                    break
-                else:
-                    print("Enter valid selection option")
-                    break
-            except ValueError:
+                accessMessage = (
+                    """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
+                print(accessMessage)
+                break
+            else:
                 print("Enter valid selection option")
-            except Exception as e:
-                print("An unexpected error occured!\n", str(e))
 
     @staticmethod
     def ViewAllAccounts():
@@ -56,10 +50,10 @@ class ViewAccounts:
         print(header)
 
         # Get accounts
-        accountsTable, response = api.GetAllAccounts()
+        accounts, response = api.GetAllAccounts()
 
         if response == "":
-            print(accountsTable)
+            SelectAccount(accounts)
         elif response == "connectionError":
             print("\n---------------------------------------------------------")
             print(
@@ -203,27 +197,55 @@ class ViewAccounts:
         return email
 
 
-# def SelectAccount(accounts):
+def GetSelection():
 
-#     print("Select an account")
+    while True:
 
-#     print(tabulate(accounts, headers="keys", tablefmt="psql"))
+        try:
 
-#     # Print out accounts TEMP
-#     # for i in range(len(accounts)):
-#     #     print(f"{i + 1}: {accounts[i]['name']}")
+            selection = int(input(": "))
 
-#     # while True:
+            if selection == "":
+                print("Enter the site's name")
+            else:
+                break
 
-#     #     selectOption = int(input(": "))
+        except ValueError:
+            print("Enter a valid option")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
 
-#     #     for i in range(len(accounts)):
-#     #         print("in loops")
+    return selection
 
-#     #         if selectOption == (i + 1):
 
-#     #             print(
-#     #                 f'Account detail for: {accounts[i]["name"]}\nUsername: {accounts[i]["username"]}\nEmail: {accounts[i]["email"]}')
+def SelectAccount(accounts):
+
+    print("Select an account")
+
+    print(tabulate(accounts, headers="keys", tablefmt="psql"))
+
+    accountNotFound = False
+
+    while True:
+
+        selection = GetSelection()
+
+        for i in range(len(accounts.index)):
+
+            if selection == i:
+
+                headerMessage = (
+                    """=========================================================""")
+                print(headerMessage)
+
+                print(
+                    f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}')
+                print("Password has been coppied to clipboard")
+
+                accountNotFound = True
+
+        if accountNotFound:
+            print("Enter valid selection option")
 
 
 ViewAccounts()
