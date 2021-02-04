@@ -1,3 +1,6 @@
+import pandas
+from pandas.io.sql import table_exists
+from tabulate import tabulate
 from mock_api import api
 
 
@@ -10,7 +13,7 @@ class ViewAccounts:
         print(headerMessage)
 
         accessMessage = (
-            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n5: Back to Main Menue\n\n=========================================================""")
+            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
         while True:
@@ -28,7 +31,7 @@ class ViewAccounts:
                 elif selection == 3:
                     self.FindAccountsLinkedToEmail()
 
-                elif selection == 5:
+                elif selection == 4:
                     headerMessage = (
                         """=========================================================\n===================== Main Menue ========================\n""")
                     print(headerMessage)
@@ -86,15 +89,15 @@ class ViewAccounts:
 
         searchName = ViewAccounts.GetSitename()
 
-        account, response = api.SearchAccountsBySitename(searchName)
+        accounts, response = api.SearchAccountsBySitename(searchName)
 
         if response == "":
 
-            if account.empty:
+            if accounts.empty:
                 print("\n---------------------------------------------------------")
                 print("No Account matching that name\n")
             else:
-                print(account)
+                SelectAccount(accounts)
 
         elif response == "connectionError":
             print("\n---------------------------------------------------------")
@@ -113,7 +116,8 @@ class ViewAccounts:
             """=========================================================\n=================== Search Accounts =====================\n""")
         print(headerMessage)
 
-        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        accessMessage = (
+            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
     @staticmethod
@@ -152,7 +156,8 @@ class ViewAccounts:
             """=========================================================\n=================== Search Accounts =====================\n""")
         print(headerMessage)
 
-        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        accessMessage = (
+            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
     @staticmethod
@@ -196,6 +201,29 @@ class ViewAccounts:
                 print("An unexpected error occured!\n", str(e))
 
         return email
+
+
+# def SelectAccount(accounts):
+
+#     print("Select an account")
+
+#     print(tabulate(accounts, headers="keys", tablefmt="psql"))
+
+#     # Print out accounts TEMP
+#     # for i in range(len(accounts)):
+#     #     print(f"{i + 1}: {accounts[i]['name']}")
+
+#     # while True:
+
+#     #     selectOption = int(input(": "))
+
+#     #     for i in range(len(accounts)):
+#     #         print("in loops")
+
+#     #         if selectOption == (i + 1):
+
+#     #             print(
+#     #                 f'Account detail for: {accounts[i]["name"]}\nUsername: {accounts[i]["username"]}\nEmail: {accounts[i]["email"]}')
 
 
 ViewAccounts()
