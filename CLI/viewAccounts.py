@@ -1,4 +1,4 @@
-from pandas.io.sql import table_exists
+from mock_api.encryption import DecryptAccountPassword
 from tabulate import tabulate
 from mock_api import api
 
@@ -221,7 +221,8 @@ def SelectAccount(accounts):
 
     print("Select an account")
 
-    print(tabulate(accounts, headers="keys", tablefmt="psql"))
+    print(tabulate(accounts[["sitename", "email"]],
+                   headers="keys", tablefmt="psql"))
 
     accountNotFound = True
     running = True
@@ -235,11 +236,18 @@ def SelectAccount(accounts):
             if selection == i:
 
                 headerMessage = (
-                    """=========================================================""")
+                    """\n=========================================================""")
                 print(headerMessage)
 
                 print(
                     f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}')
+
+                # Get password and decrypt it
+                decryptedPassword = DecryptAccountPassword(
+                    accounts["password"][i])
+                print(decryptedPassword.decode("utf-8"))
+
+                # Copy password to clipboard
                 print("Password has been coppied to clipboard\n")
                 accountNotFound = False
                 running = False

@@ -84,6 +84,8 @@ def DecryptAccountPassword(encryptedPassword):
 
     key = bytes.fromhex(os.environ.get('COMMONKEY'))
 
+    encryptedPassword = bytes.fromhex(encryptedPassword)
+
     decryptedPassword = Fernet(key).decrypt(encryptedPassword)
 
     return decryptedPassword
