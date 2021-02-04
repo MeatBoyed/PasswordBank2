@@ -210,7 +210,7 @@ def SearchAccountsBySitename(sitename: str):
 
         try:
             account = pd.read_sql(
-                f"SELECT sitename FROM accounts WHERE sitename = '{sitename}' ", connection)
+                f"SELECT sitename, email FROM accounts WHERE sitename = '{sitename}' ", connection)
         except Exception as error:
             connection.rollback()
             response = "unkownError"
