@@ -1,4 +1,3 @@
-import pandas
 from pandas.io.sql import table_exists
 from tabulate import tabulate
 from mock_api import api
@@ -123,15 +122,15 @@ class ViewAccounts:
 
         searchEmail = ViewAccounts.GetAccountEmail()
 
-        account, response = api.SearchAccountsByEmail(searchEmail)
+        accounts, response = api.SearchAccountsByEmail(searchEmail)
 
         if response == "":
 
-            if account.empty:
+            if accounts.empty:
                 print("\n---------------------------------------------------------")
                 print("No Account matching that Email\n")
             else:
-                print("\n", account, "\n")
+                SelectAccount(accounts)
 
         elif response == "connectionError":
             print("\n---------------------------------------------------------")
@@ -224,9 +223,10 @@ def SelectAccount(accounts):
 
     print(tabulate(accounts, headers="keys", tablefmt="psql"))
 
-    accountNotFound = False
+    accountNotFound = True
+    running = True
 
-    while True:
+    while running:
 
         selection = GetSelection()
 
@@ -240,9 +240,10 @@ def SelectAccount(accounts):
 
                 print(
                     f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}')
-                print("Password has been coppied to clipboard")
-
-                accountNotFound = True
+                print("Password has been coppied to clipboard\n")
+                accountNotFound = False
+                running = False
+                break
 
         if accountNotFound:
             print("Enter valid selection option")
