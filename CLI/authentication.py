@@ -45,7 +45,6 @@ def Authentication():
 
         # Correct
         if isUsernameValid == "correctUsername":
-            print("correct username")
 
             password = getpass.getpass("Enter Password: ")
             isPasswordValid = VerifyMasterAccountPassword(password)

@@ -2,6 +2,25 @@ from getpass import getpass
 # Utility libary for common functions that every page needs access too. To stop coding same logic processes.
 
 
+def GetSelection():
+
+    while True:
+
+        try:
+            selection = int(input(": "))
+
+            if selection == "":
+                print("Enter the site's name")
+            else:
+                break
+        except ValueError:
+            print("Enter a valid option")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
+
+    return selection
+
+
 def GetUsername():
 
     while True:
