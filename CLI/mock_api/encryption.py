@@ -77,7 +77,7 @@ def EncryptAccountPassword(password: str):
 
     encryptedPassword = Fernet(key).encrypt(password.encode('utf-8'))
 
-    return encryptedPassword
+    return encryptedPassword.hex()
 
 
 def DecryptAccountPassword(encryptedPassword):
