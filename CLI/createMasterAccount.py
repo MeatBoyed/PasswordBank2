@@ -1,4 +1,7 @@
+import os
 from getpass import getpass
+from mock_api import encryption
+from mock_api.api import CreateMasterAccountTable
 
 
 class CreateMasterAccount:
@@ -11,16 +14,40 @@ class CreateMasterAccount:
 
         while True:
 
-            username = self.Username()
+            username = self.GetUsername()
+            email = self.GetEmail()
+            password = self.GetPassword()
 
-            email = self.Email()
+            # Encrypt Password, and get Salts
+            HashedPassword, MasterSalt, CommonKey = encryption.InitiateEncryption(
+                password)
 
-            password = self.Password()
+            # Insert credentials to database
+            response = CreateMasterAccountTable(
+                username, email, HashedPassword.hex())
 
-            break
+            if response == "connectionError":
+                print("\n---------------------------------------------------------")
+                print(
+                    "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+                print("Try again....\n")
+                print("---------------------------------------------------------")
+            elif response == "emailViolationError":
+                print("\n---------------------------------------------------------")
+                print(
+                    "Email entered is not valid.")
+                print("Try again....\n")
+                print("---------------------------------------------------------")
+            elif response == "unkownError":
+                continue
+            else:
+                # Output salts to user
+                self.SaltCheck(MasterSalt.hex(), CommonKey.hex())
+                break
+                # Redirect to Authentication
 
     @staticmethod
-    def Username():
+    def GetUsername():
 
         while True:
 
@@ -41,7 +68,7 @@ class CreateMasterAccount:
         return username
 
     @staticmethod
-    def Email():
+    def GetEmail():
 
         while True:
 
@@ -62,7 +89,7 @@ class CreateMasterAccount:
         return email
 
     @staticmethod
-    def Password():
+    def GetPassword():
 
         verified = False
 
@@ -76,12 +103,10 @@ class CreateMasterAccount:
                     print("Password is compulsory!")
                 else:
 
-                    print("Re-eneter Password")
-
                     while True:
 
                         try:
-                            password2 = getpass("Enter Password again: ")
+                            password2 = getpass("Re-Enter Password again: ")
 
                             if password2 == "" or password1 != password2:
                                 print("Password entery failed. Try again")
@@ -104,6 +129,31 @@ class CreateMasterAccount:
                 print("An unexpected error occured!\n", str(e))
 
         return password2
+
+    @staticmethod
+    def SaltCheck(MasterSalt, CommonKey):
+
+        print("---------------------------------------------------------\n")
+        print(
+            f"Add Encryption Salt and Common Encryption Key to your Environment Variables.\nCopy these lines into .bashrc\n\n: export MASTERSALT='{MasterSalt}'\n: export COMMONKEY='{CommonKey}'\n\nLOSING SALT and Common Key VALUES WILL RESULT TO BEING DENIED ACCESS TO ALL PASSWORDS SAVED\n")
+
+        while True:
+
+            print("---------------------------------------------------------")
+            print("Press 1 to continue after saving Salt and Common Key")
+
+            try:
+                userSelect = int(input(": "))
+
+                if userSelect == 1:
+                    print("Please restart you terminal for everything to take effect.")
+                    print("Bye, bye!")
+                    break
+
+            except ValueError:
+                print("Enter 1 to continue")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
 
 
 CreateMasterAccount()

@@ -7,7 +7,7 @@ class MainMenue:
     def __init__(self):
 
         headerMessage = (
-            """=========================================================\n===================== Main Menue ========================\n""")
+            """\n\n=========================================================\n===================== Main Menue ========================\n""")
         print(headerMessage)
 
         accessMessage = (
@@ -37,7 +37,3 @@ class MainMenue:
                 print("Enter a valid select option")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
-
-
-if __name__ == "__main__":
-    MainMenue()
