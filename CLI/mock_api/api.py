@@ -187,7 +187,7 @@ def GetAllAccounts():
 
         try:
             accountsTable = pd.read_sql(
-                "SELECT * password FROM accounts", connection)
+                "SELECT * FROM accounts", connection)
         except Exception as error:
             connection.rollback()
             response = "unkownError"

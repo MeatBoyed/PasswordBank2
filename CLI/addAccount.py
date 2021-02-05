@@ -1,5 +1,5 @@
-from mock_api.api import CreateAccount
 from getpass import getpass
+from mock_api.api import CreateAccount
 from mock_api.encryption import EncryptAccountPassword
 
 
@@ -189,3 +189,6 @@ def AddAccount():
         print(80 * "=")
 
         break
+
+
+AddAccountMenue()

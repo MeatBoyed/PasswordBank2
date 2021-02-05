@@ -70,7 +70,8 @@ class ViewAccounts:
             """=========================================================\n=================== Search Accounts =====================\n""")
         print(headerMessage)
 
-        accessMessage = ("""1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Find accounts linked to a password\n5: Back to Main Menue\n\n=========================================================""")
+        accessMessage = (
+            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
     @staticmethod
@@ -243,8 +244,31 @@ def SelectAccount(accounts):
                     """\n=========================================================""")
                 print(headerMessage)
 
+                # Ask if they want to Get password and details or update selected account
                 print(
-                    f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}\nPassword: {decryptedPassword.decode("utf-8")}')
+                    "1: Get Account details\n2: Update Account details\n3: Remove account\n4: Back to Menue\n")
+                select = GetSelection()
+
+                if select == 1:
+                    # Display account details
+                    headerMessage = (
+                        """\n=========================================================""")
+                    print(headerMessage)
+                    print(
+                        f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}\nPassword: {decryptedPassword.decode("utf-8")}\n')
+                elif select == 2:
+                    # Get new credentials for account update
+                    pass
+                elif select == 3:
+                    # Run verification check
+
+                    # Delete account
+                    pass
+                elif select == 4:
+                    # Retunr them to main menue
+                    pass
+                else:
+                    print("Enter valid selection option")
 
                 # Copy password to clipboard
                 accountNotFound = False
