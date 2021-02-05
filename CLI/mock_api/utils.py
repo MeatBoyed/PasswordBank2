@@ -128,7 +128,6 @@ def GetPassword():
                             print("Password entery failed. Try again")
                             break
                         else:
-                            print("Finished eeyy")
                             verified = True
                             break
                     except ValueError:
