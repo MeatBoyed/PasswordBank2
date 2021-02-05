@@ -1,48 +1,11 @@
-from getpass import getpass
 from tabulate import tabulate
+from mock_api.utils import GetSelection, GetSitename, GetAccountURL, GetEmail, GetPassword
 from mock_api import api
 from mock_api.encryption import EncryptAccountPassword, DecryptAccountPassword
 
 
-class ViewAccounts:
+def ViewAccounts():
 
-    def __init__(self):
-
-        headerMessage = (
-            """=========================================================\n=================== Search Accounts =====================\n""")
-        print(headerMessage)
-
-        accessMessage = (
-            """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
-        print(accessMessage)
-
-        while True:
-
-            selection = GetSelection()
-            print("---------------------------------------------------------")
-
-            if selection == 1:
-                self.ViewAllAccounts()
-
-            elif selection == 2:
-                self.FindAccountByName()
-
-            elif selection == 3:
-                self.FindAccountsLinkedToEmail()
-
-            elif selection == 4:
-                headerMessage = (
-                    """=========================================================\n===================== Main Menue ========================\n""")
-                print(headerMessage)
-
-                accessMessage = (
-                    """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
-                print(accessMessage)
-                break
-            else:
-                print("Enter valid selection option")
-
-    @staticmethod
     def ViewAllAccounts():
 
         header = (
@@ -75,14 +38,13 @@ class ViewAccounts:
             """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
-    @staticmethod
     def FindAccountByName():
 
         headerMessage = (
             """=========================================================""")
         print(headerMessage)
 
-        searchName = ViewAccounts.GetSitename()
+        searchName = GetSitename()
 
         accounts, response = api.SearchAccountsBySitename(searchName)
 
@@ -115,14 +77,13 @@ class ViewAccounts:
             """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
-    @staticmethod
     def FindAccountsLinkedToEmail():
 
         headerMessage = (
             """=========================================================""")
         print(headerMessage)
 
-        searchEmail = ViewAccounts.GetAccountEmail()
+        searchEmail = GetEmail()
 
         accounts, response = api.SearchAccountsByEmail(searchEmail)
 
@@ -155,68 +116,39 @@ class ViewAccounts:
             """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
         print(accessMessage)
 
-    @staticmethod
-    def GetSitename():
+    headerMessage = (
+        """=========================================================\n=================== Search Accounts =====================\n""")
+    print(headerMessage)
 
-        while True:
-
-            try:
-
-                sitename = str(input("Site's name: "))
-
-                if sitename == "":
-                    print("Enter the site's name")
-                else:
-                    break
-
-            except ValueError:
-                print("Enter a valid sitename")
-            except Exception as e:
-                print("An unexpected error occured!\n", str(e))
-
-        return sitename
-
-    @staticmethod
-    def GetAccountEmail():
-
-        while True:
-
-            try:
-
-                email = str(input("Email: "))
-
-                if email == "":
-                    print("Enter email")
-                else:
-                    break
-
-            except ValueError:
-                print("Enter a valid Username")
-            except Exception as e:
-                print("An unexpected error occured!\n", str(e))
-
-        return email
-
-
-def GetSelection():
+    accessMessage = (
+        """1: View all Accounts\n2: Find account by Name\n3: Find accounts linked to an email\n4: Back to Main Menue\n\n=========================================================""")
+    print(accessMessage)
 
     while True:
 
-        try:
+        selection = GetSelection()
+        print("---------------------------------------------------------")
 
-            selection = int(input(": "))
+        if selection == 1:
+            ViewAllAccounts()
 
-            if selection == "":
-                print("Enter the site's name")
-            else:
-                break
+        elif selection == 2:
+            FindAccountByName()
 
-        except ValueError:
-            print("Enter a valid option")
-        except Exception as e:
-            print("An unexpected error occured!\n", str(e))
+        elif selection == 3:
+            FindAccountsLinkedToEmail()
 
-    return selection
+        elif selection == 4:
+            headerMessage = (
+                """=========================================================\n===================== Main Menue ========================\n""")
+            print(headerMessage)
+
+            accessMessage = (
+                """1: Search for Account(s)\n2: Add an Account\n3: Quit\n\n=========================================================""")
+            print(accessMessage)
+            break
+        else:
+            print("Enter valid selection option")
 
 
 def SelectAccount(accounts):
@@ -259,7 +191,6 @@ def SelectAccount(accounts):
                         f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}\nPassword: {decryptedPassword.decode("utf-8")}\n')
                 elif select == 2:
                     UpdateAccount(id=accounts["id"][i])
-                    break
                 elif select == 3:
                     RemoveAccount(id=accounts["id"][i])
                 elif select == 4:
@@ -279,87 +210,6 @@ def SelectAccount(accounts):
 
 def UpdateAccount(id):
 
-    def GetAccountURL():
-
-        while True:
-
-            try:
-
-                accountUrl = str(input("url (optional): "))
-
-                if accountUrl == "":
-                    break
-                else:
-                    break
-
-            except ValueError:
-                print("Enter a valid Username")
-            except Exception as e:
-                print("An unexpected error occured!\n", str(e))
-
-        return accountUrl
-
-    def GetAccountEmail():
-
-        while True:
-
-            try:
-
-                email = str(input("Email: "))
-
-                if email == "":
-                    print("Account name can't be empty")
-                else:
-                    break
-
-            except ValueError:
-                print("Enter a valid Username")
-            except Exception as e:
-                print("An unexpected error occured!\n", str(e))
-
-        return email
-
-    def GetAccountPassword():
-
-        verified = False
-
-        while True:
-
-            try:
-
-                password1 = getpass("Password: ")
-
-                if password1 == "":
-                    print("Password is compulsory!")
-                else:
-
-                    while True:
-
-                        try:
-                            password2 = getpass("Re-Enter Password again: ")
-
-                            if password2 == "" or password1 != password2:
-                                print("Password entery failed. Try again")
-                                break
-                            else:
-                                print("Finished eeyy")
-                                verified = True
-                                break
-                        except ValueError:
-                            print("Enter a valid Password")
-                        except Exception as e:
-                            print("An unexpected error occured!\n", str(e))
-
-                    if verified:
-                        break
-
-            except ValueError:
-                print("Enter a valid Password")
-            except Exception as e:
-                print("An unexpected error occured!\n", str(e))
-
-        return password2
-
     while True:
 
         headerMessage = (
@@ -367,8 +217,8 @@ def UpdateAccount(id):
         print(headerMessage)
 
         accountUrl = GetAccountURL()
-        accountEmail = GetAccountEmail()
-        accountPassword = GetAccountPassword()
+        accountEmail = GetEmail()
+        accountPassword = GetPassword()
 
         # Encrypt password
         encryptedAccountPassowrd = EncryptAccountPassword(
@@ -489,3 +339,6 @@ def RemoveAccount(id):
         print(80 * "=")
 
         break
+
+
+ViewAccounts()

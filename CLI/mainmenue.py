@@ -30,3 +30,6 @@ def MainMenue():
             break
         else:
             print("Enter a valid select option")
+
+
+MainMenue()

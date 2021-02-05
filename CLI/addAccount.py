@@ -189,3 +189,6 @@ def AddAccount():
         print(80 * "=")
 
         break
+
+
+AddAccountMenue()

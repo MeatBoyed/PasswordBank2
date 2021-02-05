@@ -42,6 +42,48 @@ def GetUsername():
     return username
 
 
+def GetSitename():
+
+    while True:
+
+        try:
+
+            sitename = str(input("Site's name: "))
+
+            if sitename == "":
+                print("Enter the site's name")
+            else:
+                break
+
+        except ValueError:
+            print("Enter a valid sitename")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
+
+    return sitename
+
+
+def GetAccountURL():
+
+    while True:
+
+        try:
+
+            accountUrl = str(input("url (optional): "))
+
+            if accountUrl == "":
+                break
+            else:
+                break
+
+        except ValueError:
+            print("Enter a valid Username")
+        except Exception as e:
+            print("An unexpected error occured!\n", str(e))
+
+    return accountUrl
+
+
 def GetEmail():
 
     while True:
