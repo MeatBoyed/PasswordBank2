@@ -267,11 +267,13 @@ def RemoveAccount(id):
 
             try:
 
+                print("Are you sure you want to Delete this account?\n1: Yes\n2: No")
                 conformation1 = int(input(": "))
 
-                if conformation1 == None:
-                    print("Conformation is compulsory!")
-                else:
+                if conformation1 == 2:
+                    conformation = False
+                    break
+                elif conformation1 == 1:
 
                     while True:
 
@@ -283,7 +285,6 @@ def RemoveAccount(id):
                                 print("Conformation entery failed. Try again")
                                 break
                             else:
-                                print("Finished eeyy")
                                 conformation = True
                                 break
                         except ValueError:
@@ -293,13 +294,15 @@ def RemoveAccount(id):
 
                     if conformation:
                         break
+                elif conformation1 == None:
+                    print("Conformation is compulsory!")
 
             except ValueError:
                 print("Enter a valid Conformation")
             except Exception as e:
                 print("An unexpected error occured!\n", str(e))
 
-        return conformation2
+        return conformation
 
     while True:
 
@@ -316,6 +319,7 @@ def RemoveAccount(id):
             break
 
         if response == "success":
+            print("---------------------------------------------------------")
             print("Account has been deleted")
         elif response == "connectionError":
             print("\n---------------------------------------------------------")
@@ -339,6 +343,3 @@ def RemoveAccount(id):
         print(80 * "=")
 
         break
-
-
-ViewAccounts()
