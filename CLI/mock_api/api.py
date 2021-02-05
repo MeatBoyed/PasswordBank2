@@ -186,9 +186,10 @@ def UpdateAccount(email: str, password: str, id: int, url=""):
 
         cursor = connection.cursor()
 
-        # Update Table 
+        # Update Table
         try:
-            cursor.execute(f"UPDATE accounts SET email='{email}', url='{url}', password='{password}' WHERE id={id}")
+            cursor.execute(
+                f"UPDATE accounts SET email='{email}', url='{url}', password='{password}' WHERE id={id}")
         except psycopg2.errors.CheckViolation as error:
             response = "emailViolationError"
             connection.rollback()
@@ -203,6 +204,34 @@ def UpdateAccount(email: str, password: str, id: int, url=""):
         cursor.close()
         connection.close()
         print("Account added")
+
+    return response
+
+
+def RemoveAccount(id: int):
+
+    # Connect to Database
+    connection, response = ConnectToDatabase()
+
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        # Update Table
+        try:
+            cursor.execute(f"DELETE FROM accounts WHERE id={id}")
+            response = "success"
+        except Exception as error:
+            # Add handler for invalid email
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+        print("Account removed")
 
     return response
 

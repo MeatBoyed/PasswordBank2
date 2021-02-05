@@ -261,10 +261,7 @@ def SelectAccount(accounts):
                     UpdateAccount(id=accounts["id"][i])
                     break
                 elif select == 3:
-                    # Run verification check
-
-                    # Delete account
-                    pass
+                    RemoveAccount(id=accounts["id"][i])
                 elif select == 4:
                     # Retunr them to main menue
                     pass
@@ -365,6 +362,10 @@ def UpdateAccount(id):
 
     while True:
 
+        headerMessage = (
+            """\n=========================================================""")
+        print(headerMessage)
+
         accountUrl = GetAccountURL()
         accountEmail = GetAccountEmail()
         accountPassword = GetAccountPassword()
@@ -383,6 +384,90 @@ def UpdateAccount(id):
                 email=accountEmail, url=accountUrl, password=encryptedAccountPassowrd, id=id)
 
         if response == "connectionError":
+            print("\n---------------------------------------------------------")
+            print(
+                "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "emailViolationError":
+            print("\n---------------------------------------------------------")
+            print(
+                "Email entered is not valid.")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "unkownError":
+            continue
+
+        print(80 * "=")
+        accessMessage = (
+            "1: Add new Account\n2: Update a Account\n3: Back to Main Menue\n")
+        print(accessMessage)
+        print(80 * "=")
+
+        break
+
+
+def RemoveAccount(id):
+
+    def GetConformation():
+
+        conformation = False
+
+        while True:
+
+            try:
+
+                conformation1 = int(input(": "))
+
+                if conformation1 == None:
+                    print("Conformation is compulsory!")
+                else:
+
+                    while True:
+
+                        try:
+                            conformation2 = int(
+                                input("Re-Enter Conformation again: "))
+
+                            if conformation1 != conformation2:
+                                print("Conformation entery failed. Try again")
+                                break
+                            else:
+                                print("Finished eeyy")
+                                conformation = True
+                                break
+                        except ValueError:
+                            print("Enter a valid Conformation option")
+                        except Exception as e:
+                            print("An unexpected error occured!\n", str(e))
+
+                    if conformation:
+                        break
+
+            except ValueError:
+                print("Enter a valid Conformation")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return conformation2
+
+    while True:
+
+        headerMessage = (
+            """\n=========================================================""")
+        print(headerMessage)
+        # Ensure they want to delete account
+        conformation = GetConformation()
+
+        # Delete account
+        if conformation == 1:
+            response = api.RemoveAccount(id=id)
+        else:
+            break
+
+        if response == "success":
+            print("Account has been deleted")
+        elif response == "connectionError":
             print("\n---------------------------------------------------------")
             print(
                 "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
