@@ -17,8 +17,7 @@ def AddAccount():
         accountPassword = GetPassword()
 
         # Encrypt password
-        encryptedAccountPassowrd = EncryptAccountPassword(
-            accountPassword).hex()
+        encryptedAccountPassowrd = EncryptAccountPassword(accountPassword)
 
         # Add account to Database
         if accountUrl == "":
