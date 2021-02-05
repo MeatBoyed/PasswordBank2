@@ -1,6 +1,7 @@
+from getpass import getpass
 from tabulate import tabulate
 from mock_api import api
-from mock_api.encryption import DecryptAccountPassword
+from mock_api.encryption import EncryptAccountPassword, DecryptAccountPassword
 
 
 class ViewAccounts:
@@ -257,8 +258,8 @@ def SelectAccount(accounts):
                     print(
                         f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}\nPassword: {decryptedPassword.decode("utf-8")}\n')
                 elif select == 2:
-                    # Get new credentials for account update
-                    pass
+                    UpdateAccount(id=accounts["id"][i])
+                    break
                 elif select == 3:
                     # Run verification check
 
@@ -277,6 +278,132 @@ def SelectAccount(accounts):
 
         if accountNotFound:
             print("Enter valid selection option")
+
+
+def UpdateAccount(id):
+
+    def GetAccountURL():
+
+        while True:
+
+            try:
+
+                accountUrl = str(input("url (optional): "))
+
+                if accountUrl == "":
+                    break
+                else:
+                    break
+
+            except ValueError:
+                print("Enter a valid Username")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return accountUrl
+
+    def GetAccountEmail():
+
+        while True:
+
+            try:
+
+                email = str(input("Email: "))
+
+                if email == "":
+                    print("Account name can't be empty")
+                else:
+                    break
+
+            except ValueError:
+                print("Enter a valid Username")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return email
+
+    def GetAccountPassword():
+
+        verified = False
+
+        while True:
+
+            try:
+
+                password1 = getpass("Password: ")
+
+                if password1 == "":
+                    print("Password is compulsory!")
+                else:
+
+                    while True:
+
+                        try:
+                            password2 = getpass("Re-Enter Password again: ")
+
+                            if password2 == "" or password1 != password2:
+                                print("Password entery failed. Try again")
+                                break
+                            else:
+                                print("Finished eeyy")
+                                verified = True
+                                break
+                        except ValueError:
+                            print("Enter a valid Password")
+                        except Exception as e:
+                            print("An unexpected error occured!\n", str(e))
+
+                    if verified:
+                        break
+
+            except ValueError:
+                print("Enter a valid Password")
+            except Exception as e:
+                print("An unexpected error occured!\n", str(e))
+
+        return password2
+
+    while True:
+
+        accountUrl = GetAccountURL()
+        accountEmail = GetAccountEmail()
+        accountPassword = GetAccountPassword()
+
+        # Encrypt password
+        encryptedAccountPassowrd = EncryptAccountPassword(
+            accountPassword).hex()
+
+        # Add account to Database
+        if accountUrl == "":
+            response = api.UpdateAccount(
+                email=accountEmail, password=encryptedAccountPassowrd, id=id)
+
+        else:
+            response = api.UpdateAccount(
+                email=accountEmail, url=accountUrl, password=encryptedAccountPassowrd, id=id)
+
+        if response == "connectionError":
+            print("\n---------------------------------------------------------")
+            print(
+                "A connection error to the database corrured.\nPlease check your Database Credentials and connections.\n")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "emailViolationError":
+            print("\n---------------------------------------------------------")
+            print(
+                "Email entered is not valid.")
+            print("Try again....\n")
+            print("---------------------------------------------------------")
+        elif response == "unkownError":
+            continue
+
+        print(80 * "=")
+        accessMessage = (
+            "1: Add new Account\n2: Update a Account\n3: Back to Main Menue\n")
+        print(accessMessage)
+        print(80 * "=")
+
+        break
 
 
 ViewAccounts()

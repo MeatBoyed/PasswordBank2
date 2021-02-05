@@ -177,6 +177,36 @@ def CreateAccount(sitename: str, email: str, password: str, url=""):
     return response
 
 
+def UpdateAccount(email: str, password: str, id: int, url=""):
+
+    # Connect to Database
+    connection, response = ConnectToDatabase()
+
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        # Update Table 
+        try:
+            cursor.execute(f"UPDATE accounts SET email='{email}', url='{url}', password='{password}' WHERE id={id}")
+        except psycopg2.errors.CheckViolation as error:
+            response = "emailViolationError"
+            connection.rollback()
+        except Exception as error:
+            # Add handler for invalid email
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+        print("Account added")
+
+    return response
+
+
 def GetAllAccounts():
 
     connection, response = ConnectToDatabase()
