@@ -187,7 +187,7 @@ def GetAllAccounts():
 
         try:
             accountsTable = pd.read_sql(
-                "SELECT sitename, email, password FROM accounts", connection)
+                "SELECT * password FROM accounts", connection)
         except Exception as error:
             connection.rollback()
             response = "unkownError"
@@ -210,7 +210,7 @@ def SearchAccountsBySitename(sitename: str):
 
         try:
             account = pd.read_sql(
-                f"SELECT sitename, email, password FROM accounts WHERE sitename = '{sitename}' ", connection)
+                f"SELECT * FROM accounts WHERE sitename = '{sitename}' ", connection)
         except Exception as error:
             connection.rollback()
             response = "unkownError"
@@ -234,7 +234,7 @@ def SearchAccountsByEmail(email: str):
 
         try:
             account = pd.read_sql(
-                f"SELECT sitename, email, password FROM accounts WHERE email = '{email}' ", connection)
+                f"SELECT * FROM accounts WHERE email = '{email}' ", connection)
         except Exception as error:
             connection.rollback()
             response = "unkownError"
