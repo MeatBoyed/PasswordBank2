@@ -1,6 +1,6 @@
-from mock_api.encryption import DecryptAccountPassword
 from tabulate import tabulate
 from mock_api import api
+from mock_api.encryption import DecryptAccountPassword
 
 
 class ViewAccounts:
@@ -235,20 +235,18 @@ def SelectAccount(accounts):
 
             if selection == i:
 
+                # Get password and decrypt it
+                decryptedPassword = DecryptAccountPassword(
+                    accounts["password"][i])
+
                 headerMessage = (
                     """\n=========================================================""")
                 print(headerMessage)
 
                 print(
-                    f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}')
-
-                # Get password and decrypt it
-                decryptedPassword = DecryptAccountPassword(
-                    accounts["password"][i])
-                print(decryptedPassword.decode("utf-8"))
+                    f'Account detail for: {accounts["sitename"][i]}\nEmail: {accounts["email"][i]}\nPassword: {decryptedPassword.decode("utf-8")}')
 
                 # Copy password to clipboard
-                print("Password has been coppied to clipboard\n")
                 accountNotFound = False
                 running = False
                 break
