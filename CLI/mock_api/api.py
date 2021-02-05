@@ -2,7 +2,7 @@ import os
 import sys
 import psycopg2
 import pandas as pd
-# from .encryption import HashMasterPassword
+from .encryption import HashMasterPassword
 
 DB_HOST = os.environ.get('DB_HOST')
 DB_USER = os.environ.get('DB_USER')

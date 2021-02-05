@@ -20,6 +20,7 @@ def CreateMasterAccount():
                 userSelect = int(input(": "))
 
                 if userSelect == 1:
+                    print("---------------------------------------------------------")
                     print("Please restart you terminal for everything to take effect.")
                     print("Bye, bye!")
                     break
@@ -67,5 +68,3 @@ def CreateMasterAccount():
             break
             # Redirect to Authentication
 
-
-CreateMasterAccount()

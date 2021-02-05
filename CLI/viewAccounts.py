@@ -489,6 +489,3 @@ def RemoveAccount(id):
         print(80 * "=")
 
         break
-
-
-ViewAccounts()
