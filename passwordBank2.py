@@ -1,5 +1,8 @@
-from CLI import createMasterAccount, authentication
+from CLI import createMasterAccount, authentication, mainmenue
 from CLI.mock_api.api import ConnectToDatabase, MasterAccountCheck
+
+connection = None
+authenticated = False
 
 while True:
 
@@ -14,21 +17,16 @@ while True:
         break
 
     # Check that Master Account has been created
-    # masterAccountExists, response = MasterAccountCheck()
-    masterAccountExists = True
+    masterAccountExists, response = MasterAccountCheck()
+
     if masterAccountExists:
-
         authenticated = authentication.Authentication()
-
-        if authenticated:
-            break
+        break
     else:
-
-        print("Doens't exist")
         createMasterAccount.CreateMasterAccount()
+        break
 
-    # Authentication returns a TRUE value
 
-    # Run loop and launch CLI/MainMenue.py
+if connection != None and authenticated:
 
-    # Catch any errors
+    mainmenue.MainMenue()
