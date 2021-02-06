@@ -1,6 +1,6 @@
-from mock_api.utils import GetUsername, GetEmail, GetPassword
-from mock_api import encryption
-from mock_api.api import CreateMasterAccountTable
+from .mock_api import encryption
+from .mock_api.api import CreateMasterAccountTable
+from .mock_api.utils import GetUsername, GetEmail, GetPassword
 
 
 def CreateMasterAccount():
@@ -67,4 +67,3 @@ def CreateMasterAccount():
             SaltCheck(MasterSalt.hex(), CommonKey.hex())
             break
             # Redirect to Authentication
-

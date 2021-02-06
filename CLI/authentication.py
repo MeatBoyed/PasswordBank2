@@ -1,6 +1,6 @@
 import getpass
-from mock_api.api import VerifyMasterAccountUsername, VerifyMasterAccountPassword
-from mainMenue import MainMenue
+from .mainmenue import MainMenue
+from .mock_api.api import VerifyMasterAccountUsername, VerifyMasterAccountPassword
 
 
 def Authentication():
@@ -37,6 +37,8 @@ def Authentication():
 
     print(welcomeMessage)
 
+    authenticated = False
+
     # Prompt for Master Account credentials
     while True:
 
@@ -52,7 +54,7 @@ def Authentication():
             # password correct
             if isPasswordValid == "correctPassword":
                 print(f"Welcome {username}")
-                MainMenue()
+                authenticated = True
                 break
 
             # passowrd false
@@ -62,14 +64,16 @@ def Authentication():
 
                 if retryPassword:
                     print(f"Welcome {username}")
-                    MainMenue()
+                    authenticated = True
                     break
                 else:
-                    print("Tried too many times!")
+                    print(80 * "=")
+                    print("Too many tries. Quiting for Privacy reasons.")
+                    print(80 * "=")
                     break
 
-            elif isPasswordValid == "unknownError":
-                continue
+            elif isPasswordValid == "unkownError":
+                break
 
         # Wrong username
         elif isUsernameValid == "wrongUsername":
@@ -87,18 +91,21 @@ def Authentication():
 
                     if retryPassword:
                         print(f"Welcome {username}")
-                        MainMenue()
+                        authenticated = True
                         break
                     else:
-                        print("Tried too many times!")
+                        print(80 * "=")
+                        print("Too many tries. Quiting for Privacy reasons.")
+                        print(80 * "=")
                         break
                 elif isPasswordValid == "unkownError":
-                    continue
+                    break
             else:
-                print("Tried too many times!")
+                print(80 * "=")
+                print("Too many tries. Quiting for Privacy reasons.")
+                print(80 * "=")
                 break
         elif isUsernameValid == "unkownError":
-            continue
+            break
 
-
-Authentication()
+    return authenticated

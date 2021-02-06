@@ -1,7 +1,7 @@
 from tabulate import tabulate
-from mock_api.utils import GetSelection, GetSitename, GetAccountURL, GetEmail, GetPassword
-from mock_api import api
-from mock_api.encryption import EncryptAccountPassword, DecryptAccountPassword
+from .mock_api.utils import GetSelection, GetSitename, GetAccountURL, GetEmail, GetPassword
+from .mock_api import api
+from .mock_api.encryption import EncryptAccountPassword, DecryptAccountPassword
 
 
 def ViewAccounts():
