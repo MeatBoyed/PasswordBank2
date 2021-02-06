@@ -38,6 +38,32 @@ def ConnectToDatabase():
     return connection, response
 
 
+def MasterAccountCheck():
+
+    connection, response = ConnectToDatabase()
+
+    masterAccountExists = False
+
+    if connection != None:
+
+        cursor = connection.cursor()
+
+        try:
+            cursor.execute("SELECT username FROM masteraccount")
+            masterAccountExists = True
+        except psycopg2.errors.UndefinedTable as error:
+            masterAccountExists = False
+        except Exception as error:
+            connection.rollback()
+            response = "unkownError"
+            ErrorHandler(error)
+
+        cursor.close()
+        connection.close()
+
+    return masterAccountExists, response
+
+
 def CreateMasterAccountTable(username: str, email: str, password: str):
     """
     Creates MasterAccount Table, and inserts credentials to table.

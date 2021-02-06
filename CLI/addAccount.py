@@ -1,7 +1,7 @@
 from getpass import getpass
-from mock_api.utils import GetSitename, GetAccountURL, GetEmail, GetPassword
-from mock_api.api import CreateAccount
-from mock_api.encryption import EncryptAccountPassword
+from .mock_api.utils import GetSitename, GetAccountURL, GetEmail, GetPassword
+from .mock_api.api import CreateAccount
+from .mock_api.encryption import EncryptAccountPassword
 
 
 def AddAccount():

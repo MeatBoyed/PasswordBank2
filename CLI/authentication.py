@@ -1,6 +1,6 @@
 import getpass
-from mock_api.api import VerifyMasterAccountUsername, VerifyMasterAccountPassword
-from mainMenue import MainMenue
+from .mainmenue import MainMenue
+from .mock_api.api import VerifyMasterAccountUsername, VerifyMasterAccountPassword
 
 
 def Authentication():
@@ -99,6 +99,3 @@ def Authentication():
                 break
         elif isUsernameValid == "unkownError":
             continue
-
-
-Authentication()

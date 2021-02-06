@@ -1,6 +1,6 @@
-from mock_api.utils import GetSelection
-from viewAccounts import ViewAccounts
-from addAccount import AddAccount
+from .mock_api.utils import GetSelection
+from .viewAccounts import ViewAccounts
+from .addAccount import AddAccount
 
 
 def MainMenue():
@@ -30,6 +30,3 @@ def MainMenue():
             break
         else:
             print("Enter a valid select option")
-
-
-MainMenue()
