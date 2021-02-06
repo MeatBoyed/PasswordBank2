@@ -22,7 +22,7 @@ User is prompted with the option of either; Viewing all accounts in the database
 
 ![Command%20Line%20Interface%20(CLI)%2089d93c7c77f44a4ba3d46bfbfa6c2d3b/Screenshot_2021-01-26_193336.jpg](CLI-Images/viewaccounts.jpg)
 
-![Command%20Line%20Interface%20(CLI)%2089d93c7c77f44a4ba3d46bfbfa6c2d3b/Untitled%202.png](CLI-Images/viewAccounts.png)
+![Command%20Line%20Interface%20(CLI)%2089d93c7c77f44a4ba3d46bfbfa6c2d3b/Untitled%202.png](CLI-Images/viewAccounts2.png)
 
 # Add Account
 
