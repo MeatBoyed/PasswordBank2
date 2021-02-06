@@ -87,7 +87,7 @@ All the encryption middleware will be done by an external script of some sorts
 
 Stores all the account data. Pretty simple to be honest.
 
-[Database Architecture](books/free-programming-books.md)
+[Database Architecture](Doc/Database-Architecture.md)
 
 # Update Features
 
