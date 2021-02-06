@@ -390,7 +390,7 @@ def VerifyMasterAccountPassword(password: str):
 
         try:
 
-            cursor.execute("SELECT password FROM masteraccount")
+            cursor.execute("SELECT password FROM masteracount")
             MasterAccountPassword = cursor.fetchone()[0]
 
             # Hash Password param value

@@ -1,35 +1,34 @@
 from CLI import createMasterAccount, authentication
 from CLI.mock_api.api import ConnectToDatabase, MasterAccountCheck
 
-# Check database exists with correct credentials
-connection, response = ConnectToDatabase()
+while True:
 
-if connection == None:
+    # Check database exists with correct credentials
+    connection, response = ConnectToDatabase()
+    if connection == None:
 
-    print(80 * "=")
-    print("\nDabase does not exist or settings not configured correctly")
-    print("Please configure Environment Variables correctly, and try again\n")
-    print(80 * "=")
+        print(80 * "=")
+        print("\nDabase does not exist or settings not configured correctly")
+        print("Please configure Environment Variables correctly, and try again\n")
+        print(80 * "=")
+        break
 
+    # Check that Master Account has been created
+    # masterAccountExists, response = MasterAccountCheck()
+    masterAccountExists = True
+    if masterAccountExists:
 
-masterAccountExists, response = MasterAccountCheck()
+        authenticated = authentication.Authentication()
 
-if masterAccountExists == False:
+        if authenticated:
+            break
+    else:
 
-    print("Doens't exist")
-    createMasterAccount.CreateMasterAccount()
-else:
+        print("Doens't exist")
+        createMasterAccount.CreateMasterAccount()
 
-    print("exists")
-    authentication.Authentication()
+    # Authentication returns a TRUE value
 
-# Check that Master Account has been created
-# masterAccountExists = MasterAccountCheck()
-# If not created, launch CLI/CreateMasterAccount.py
-# Else launch CLI/Authentication.py
+    # Run loop and launch CLI/MainMenue.py
 
-# Authentication returns a TRUE value
-
-# Run loop and launch CLI/MainMenue.py
-
-# Catch any errors
+    # Catch any errors
