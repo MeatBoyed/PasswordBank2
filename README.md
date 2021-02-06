@@ -47,7 +47,7 @@ The CLI will be responsible for managing all sessions. This is mainly checking t
 
 There is room for a hand-shake like validation system to be implemented here between the CLI Session Validation and the "Mock" AP, to ensure that the user is acting on the privileges available to them.
 
-[Command Line Interface (CLI)](Doc/Command Line Interface.md)
+[Command Line Interface (CLI)](Doc/Command-Line-Interface.md)
 
 ## "Mock" API
 
